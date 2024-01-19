@@ -19,6 +19,7 @@ export default function () {
 
     const {
         data: product,
+        isSuccess
     } = useQuery(['getProductById', id], () => DysonApi.getProductById(id as string), {
             enabled: !!id,
             onSuccess: (data: any) => {
@@ -60,7 +61,7 @@ export default function () {
         }
     }
 
-    return (
+    return isSuccess && (
         <DefaultLayout>
             <div className="single-product-area section-padding-100 clearfix">
                 <div className="container-fluid">
@@ -69,7 +70,7 @@ export default function () {
                             <nav aria-label="breadcrumb">
                                 <ol className="breadcrumb mt-50">
                                     <li className="breadcrumb-item"><a href="/">Home</a></li>
-                                    <li className="breadcrumb-item">{product.category}</li>
+                                    <li className="breadcrumb-item">{product?.category}</li>
                                     <li className="breadcrumb-item active" aria-current="page">{(product.name)}</li>
                                 </ol>
                             </nav>
@@ -82,7 +83,8 @@ export default function () {
                                     <ol className="carousel-indicators">
                                         {
                                             product.images.map((image: string, index: number) => (
-                                                <li className={index === currentImageIndex ? "active" : ""}
+                                                <li
+                                                    className={index === currentImageIndex ? "active" : ""}
                                                     data-target="#product_details_slider"
                                                     style={{backgroundImage: `url(${image})`}}
                                                     key={index}
@@ -95,11 +97,13 @@ export default function () {
                                     <div className="carousel-inner">
                                         {
                                             product.images.map((image: string, index: number) => (
-                                                <div className={
-                                                    index === currentImageIndex ?
-                                                        "carousel-item active" :
-                                                        "carousel-item"
-                                                }
+                                                <div
+                                                    key={index}
+                                                    className={
+                                                        index === currentImageIndex ?
+                                                            "carousel-item active" :
+                                                            "carousel-item"
+                                                    }
                                                 >
                                                     <a className="gallery_img" href={image}>
                                                         <img className="d-block w-100" src={image}
@@ -123,7 +127,8 @@ export default function () {
                                         {
                                             product.discount > 0 && (
                                                 <>
-                                                    <p className={'mb-1'} style={{textDecoration: 'line-through'}}>${product?.price.toFixed(2)}</p>
+                                                    <p className={'mb-1'}
+                                                       style={{textDecoration: 'line-through'}}>${product?.price.toFixed(2)}</p>
                                                     <p className={'ml-2 text-danger mb-1'}>-{product?.discount}%</p>
                                                 </>
                                             )
