@@ -20,7 +20,13 @@ export default function () {
                 <div className="amado-pro-catagory clearfix row">
                     {
                         getNewProductSs && newProduct.map((e: any) => (
-                            <ProductCard title={e.name} price={e.currentPrice} image={e.images[0]} key={e._id} id={e._id} />
+                            <ProductCard
+                                key={e._id}
+                                item={{
+                                ...e,
+                                id: e._id,
+                                image: e.images[0],
+                            }}/>
                         ))
                     }
                 </div>

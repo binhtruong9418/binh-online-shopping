@@ -23,9 +23,9 @@ const Checkout = () => {
     const [note, setNote] = useState<string>('')
     const [listDistrict, setListDistrict] = useState<any[]>([])
     const [listWard, setListWard] = useState<any[]>([])
-
-
     const listProvince = JSON.parse(JSON.stringify(AddressJson))
+
+    const [isCod, setIsCod] = useState<boolean>(false)
 
 
     const {
@@ -84,12 +84,16 @@ const Checkout = () => {
                 name: name,
                 phone: phone,
                 email: email,
-                note: note
+                note: note,
+                paymentMethod: isCod ? 'cod' : 'vnpay',
             }
             const newOrder = await DysonApi.createOrder(data)
-            if (newOrder) {
+            if(isCod) {
                 toast.success('Order success', { position: 'top-left' })
                 navigate(`/checkout/success/${newOrder._id}`)
+            } else {
+                const vnpayUrl = await DysonApi.createVnpayPaymentUrl(newOrder._id)
+                window.location.href = vnpayUrl
             }
         } catch (error) {
             toast.error('Order failed', { position: 'top-left' })
@@ -223,14 +227,14 @@ const Checkout = () => {
 
 
                                 <div className="payment-method">
-                                    <div className="custom-control custom-checkbox mr-sm-2">
-                                        <input type="checkbox" className="custom-control-input" checked readOnly />
-                                        <label className="custom-control-label">Shipping fee agreed later</label>
-                                    </div>
-
-
-                                    <div className="custom-control custom-checkbox mr-sm-2">
-                                        <input type="checkbox" className="custom-control-input" checked readOnly />
+                                    <div className="custom-control custom-checkbox mr-sm-2" onClick={() => {
+                                        setIsCod(!isCod)
+                                    }}>
+                                        <input
+                                            type="checkbox"
+                                            className="custom-control-input"
+                                            checked={isCod}
+                                        />
                                         <label className="custom-control-label">Cash on delivery (COD)</label>
                                     </div>
                                 </div>

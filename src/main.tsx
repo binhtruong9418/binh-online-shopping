@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import store from "./redux";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { CookiesProvider } from 'react-cookie';
+import './index.css'
 
 const queryClient = new QueryClient();
 

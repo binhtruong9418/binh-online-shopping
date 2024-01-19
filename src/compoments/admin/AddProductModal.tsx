@@ -1,10 +1,11 @@
-import { Button, Carousel, Form, Image, Input, InputNumber, Modal, Select, Space, Typography, Upload } from 'antd';
-import { useState, useRef } from 'react';
-import { toast } from 'react-toastify'
+import {Button, Carousel, Form, Image, Input, InputNumber, Modal, Select, Space, Typography, Upload} from 'antd';
+import {useRef, useState} from 'react';
+import {toast} from 'react-toastify'
 
-import { CloudUploadOutlined, DeleteOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons";
+import {CloudUploadOutlined, DeleteOutlined, LeftOutlined, RightOutlined} from "@ant-design/icons";
 import DysonApi from '../../axios/DysonApi';
-import { useQuery } from 'react-query';
+import {useQuery} from 'react-query';
+
 const IMAGE_TYPES = ["image/png", "image/jpeg"];
 
 
@@ -35,10 +36,9 @@ const AddProductModal = ({
             setIsLoading(true);
             let listNewImages = []
             if (listImage.length > 0) {
-                const res = await Promise.all(listImage.map((item: any) => {
+                listNewImages = await Promise.all(listImage.map((item: any) => {
                     return DysonApi.uploadFile(item)
                 }))
-                listNewImages = res
             }
             await DysonApi.addProduct({
                 name: productName,
@@ -111,7 +111,6 @@ const AddProductModal = ({
                             handleChooseThumbnail
                         }
                         maxCount={10}
-                        multiple
                         showUploadList={false}
                     >
                         <Button className="d-flex m-auto align-items-center">
@@ -218,6 +217,7 @@ const AddProductModal = ({
                             addonAfter='$'
                             className="w-100"
                             size="large"
+                            min={0}
                         />
                     </Form.Item>
 

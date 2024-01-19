@@ -74,20 +74,6 @@ export default function () {
             <div className="amado_product_area section-padding-100">
                 <div className="container-fluid">
                     <div className="row">
-                        <div className="col-12">
-                            <div className="product-topbar d-xl-flex align-items-center justify-content-between">
-                                <div className="total-products">
-                                    <p>
-                                        Showing {currentPage * TOTAL_PRODUCT_PER_PAGE + 1}-{
-                                            (currentPage + 1) * TOTAL_PRODUCT_PER_PAGE > listProduct.length ? listProduct.length : (currentPage + 1) * TOTAL_PRODUCT_PER_PAGE
-                                        } {" "}
-                                        0f {isSuccessProduct && listProduct.length} results
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row">
                         {
                             isSuccessProduct && listPageProduct.map((item: any) => (
                                 <ShopCard

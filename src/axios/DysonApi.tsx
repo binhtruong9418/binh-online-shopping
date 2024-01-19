@@ -1,4 +1,5 @@
 import AxiosClient from "./AxiosClient.tsx";
+import axios from "axios";
 
 const DysonApi = {
     //Product
@@ -155,20 +156,26 @@ const DysonApi = {
 
     //file
     uploadFile: async (file: any): Promise<any> => {
-        const url = 'file/upload'
-        console.log(file);
+        const url = 'file/get-signed-url'
 
-        const formData = new FormData();
-        const newFile = new File([file], file.name, { type: file.type })
-        formData.append('file', newFile);
-        console.log(formData);
-        const response = await AxiosClient.post(url, formData, {
+        const fileName = file.name.trim().replace(/\s/g, "-");
+        const response = await AxiosClient.post(url, { fileName });
+
+        const signedUrl = response.data.presignedUrl;
+        await axios.put(signedUrl, file, {
             headers: {
-                'Content-Type': 'multipart/form-data'
+                'Content-Type': file.type,
             }
-        })
+        });
+
         return response.data.url
-    }
+    },
+
+    createVnpayPaymentUrl: async (orderId: string): Promise<any> => {
+        const url = 'payment/create-vnpay-payment-url/' + orderId
+        const response = await AxiosClient.get(url);
+        return response.data
+    },
 };
 
 export default DysonApi;

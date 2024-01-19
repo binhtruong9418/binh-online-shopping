@@ -1,44 +1,43 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { useState } from "react";
-import { useQuery, useQueryClient } from 'react-query';
+import {useNavigate, useParams} from "react-router-dom";
+import {useState} from "react";
+import {useQuery, useQueryClient} from 'react-query';
 import DysonApi from '../axios/DysonApi';
-import { toast } from 'react-toastify';
-import { Skeleton } from 'antd';
-import { useCookies } from 'react-cookie';
+import {toast} from 'react-toastify';
+import {Skeleton} from 'antd';
+import {useCookies} from 'react-cookie';
 import DefaultLayout from "./layout/DefaultLayout";
+import {upperCaseFirstLetter} from "../utils";
+
 export default function () {
-    const { id } = useParams();
+    const {id} = useParams();
     const [quantity, setQuantity] = useState<number>(1);
     const navigate = useNavigate();
-    const [{ cart: cartId }] = useCookies(['cart']);
+    const [{cart: cartId}] = useCookies(['cart']);
     const queryClient = useQueryClient();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
 
     const {
         data: product,
-        isSuccess,
     } = useQuery(['getProductById', id], () => DysonApi.getProductById(id as string), {
-        refetchOnWindowFocus: 'always',
-        enabled: !!id,
-        onSuccess: (data: any) => {
-            if (!data) {
-                navigate('/404');
+            enabled: !!id,
+            onSuccess: (data: any) => {
+                if (!data) {
+                    navigate('/404');
+                }
             }
         }
-    }
     );
 
 
-
-    if (isLoading) return (<Skeleton active />)
+    if (isLoading) return (<Skeleton active/>)
 
     const handleUpdateQuantity = (type: string) => {
         if (type === 'plus') {
             setQuantity(quantity + 1)
         } else {
             quantity > 1 &&
-                setQuantity(quantity - 1)
+            setQuantity(quantity - 1)
         }
     }
 
@@ -52,7 +51,7 @@ export default function () {
             })
             if (resp) {
                 toast.success('Add to cart successfully')
-                queryClient.invalidateQueries('myCartQuantity')
+                await queryClient.invalidateQueries('myCartQuantity')
             }
         } catch (error) {
             toast.error('Add to cart failed')
@@ -61,7 +60,7 @@ export default function () {
         }
     }
 
-    return isSuccess && (
+    return (
         <DefaultLayout>
             <div className="single-product-area section-padding-100 clearfix">
                 <div className="container-fluid">
@@ -71,7 +70,7 @@ export default function () {
                                 <ol className="breadcrumb mt-50">
                                     <li className="breadcrumb-item"><a href="/">Home</a></li>
                                     <li className="breadcrumb-item">{product.category}</li>
-                                    <li className="breadcrumb-item active" aria-current="page">{product.name}</li>
+                                    <li className="breadcrumb-item active" aria-current="page">{(product.name)}</li>
                                 </ol>
                             </nav>
                         </div>
@@ -85,7 +84,7 @@ export default function () {
                                             product.images.map((image: string, index: number) => (
                                                 <li className={index === currentImageIndex ? "active" : ""}
                                                     data-target="#product_details_slider"
-                                                    style={{ backgroundImage: `url(${image})` }}
+                                                    style={{backgroundImage: `url(${image})`}}
                                                     key={index}
                                                     onClick={() => setCurrentImageIndex(index)}
                                                     data-slide-to={index.toString()}
@@ -103,7 +102,8 @@ export default function () {
                                                 }
                                                 >
                                                     <a className="gallery_img" href={image}>
-                                                        <img className="d-block w-100" src={image} alt={`Slide ${index}`} />
+                                                        <img className="d-block w-100" src={image}
+                                                             alt={`Slide ${index}`}/>
                                                     </a>
                                                 </div>
                                             ))
@@ -115,12 +115,25 @@ export default function () {
                         <div className="col-12 col-lg-5">
                             <div className="single_product_desc">
                                 <div className="product-meta-data">
-                                    <div className="line"></div>
-                                    <p className="product-price">${product.currentPrice}</p>
+                                    <div className={'d-flex align-items-end'}>
+                                        <div>
+                                            <div className="line"></div>
+                                            <p className="product-price">${product.currentPrice.toFixed(2)}</p>
+                                        </div>
+                                        {
+                                            product.discount > 0 && (
+                                                <>
+                                                    <p className={'mb-1'} style={{textDecoration: 'line-through'}}>${product?.price.toFixed(2)}</p>
+                                                    <p className={'ml-2 text-danger mb-1'}>-{product?.discount}%</p>
+                                                </>
+                                            )
+                                        }
+                                    </div>
                                     <a href="#">
-                                        <h6>{product.name}</h6>
+                                        <h6>{upperCaseFirstLetter(product.name)}</h6>
                                     </a>
-                                    <div className="ratings-review mb-15 d-flex align-items-center justify-content-between">
+                                    <div
+                                        className="ratings-review mb-15 d-flex align-items-center justify-content-between">
                                         <div className="ratings">
                                             <i className="fa fa-star" aria-hidden="true"></i>
                                             <i className="fa fa-star" aria-hidden="true"></i>
@@ -138,7 +151,8 @@ export default function () {
                                     <div className="cart-btn d-flex mb-50">
                                         <p>Qty</p>
                                         <div className="quantity">
-                                            <span className="qty-minus" onClick={() => handleUpdateQuantity('minus')}><i className="fa fa-caret-down" aria-hidden="true"></i></span>
+                                            <span className="qty-minus" onClick={() => handleUpdateQuantity('minus')}><i
+                                                className="fa fa-caret-down" aria-hidden="true"></i></span>
                                             <input
                                                 type="number"
                                                 className="qty-text"
@@ -150,7 +164,8 @@ export default function () {
                                                 value={quantity}
                                                 onChange={(e) => setQuantity(parseInt(e.target.value))}
                                             />
-                                            <span className="qty-plus" onClick={() => handleUpdateQuantity('plus')}><i className="fa fa-caret-up" aria-hidden="true"></i></span>
+                                            <span className="qty-plus" onClick={() => handleUpdateQuantity('plus')}><i
+                                                className="fa fa-caret-up" aria-hidden="true"></i></span>
                                         </div>
                                     </div>
                                     <button
@@ -159,7 +174,8 @@ export default function () {
                                         className="btn amado-btn"
                                         onClick={handleAddToCart}
                                         disabled={isLoading}
-                                    >Add to cart</button>
+                                    >Add to cart
+                                    </button>
                                 </div>
                             </div>
                         </div>

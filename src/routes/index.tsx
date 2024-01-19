@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+    import { Route, Routes } from "react-router-dom";
 import Home from "../page/Home.tsx";
 import { updater } from "../service/updater.tsx";
 import Shop from "../page/Shop.tsx";
