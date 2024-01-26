@@ -1,4 +1,4 @@
-import {Button, Divider, Modal, Pagination, Popconfirm, Select, Space, Table, Tag} from "antd";
+import {Button, Divider, Pagination, Popconfirm, Select, Space, Table, Tag} from "antd";
 import moment from "moment";
 import { useState } from "react";
 import { useQuery } from "react-query";
@@ -58,9 +58,6 @@ const expandableProduct = (products: any) => {
 }
 
 export default function OrderTable(): JSX.Element {
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [updateOrderId, setUpdateOrderId] = useState<string>("");
-    const [updateOrderStatus, setUpdateOrderStatus] = useState("");
     const [dataSearch, setDataSearch] = useState<any>({
         page: 1,
         limit: 10,
@@ -237,6 +234,20 @@ export default function OrderTable(): JSX.Element {
                             disabled={record.status !== ORDER_STATUS.CONFIRMED}
                         >{"Delivering"}</Button>
                     </Popconfirm>
+
+                    <Popconfirm
+                        title={"Do you want to update this order to success?"}
+                        onConfirm={async () => await handleUpdateDeliveredOrder(record)}
+                        disabled={record.status !== ORDER_STATUS.DELIVERING}
+                    >
+
+                        <Button
+                            type={"primary"}
+                            icon={<MdOutlineLocalShipping className={'text-lg'}/>}
+                            className={'w-32 items-center justify-center flex'}
+                            disabled={record.status !== ORDER_STATUS.DELIVERING}
+                        >{"Delivered"}</Button>
+                    </Popconfirm>
                 </Space>
             );
             },
@@ -280,21 +291,18 @@ export default function OrderTable(): JSX.Element {
             toast.error('Update order status failed')
         }
     }
-
-    const handleUpdateOrderStatus = async () => {
+    const handleUpdateDeliveredOrder = async (record: any) => {
         try {
-            const updateStatus = await DysonApi.updateOrderStatus(updateOrderId, updateOrderStatus)
+            const updateStatus = await DysonApi.updateOrderStatus(record.orderId, ORDER_STATUS.DELIVERED)
             if (updateStatus) {
                 toast.success('Update order status successfully')
                 await refetch()
-                setIsModalVisible(false)
-                setUpdateOrderId("")
-                setUpdateOrderStatus("")
             }
         } catch (error) {
             toast.error('Update order status failed')
         }
     }
+
 
     if (isErrorListOrder) {
         return <p>Error when fetching list order</p>
@@ -379,45 +387,6 @@ export default function OrderTable(): JSX.Element {
                     })
                 }}
             />
-            <Modal
-                open={isModalVisible}
-                onCancel={() => setIsModalVisible(false)}
-                title="Update Order Status"
-                footer={null}
-            >
-                <p>Order ID: {updateOrderId}</p>
-                <div>
-                    <Select
-                        options={[
-                            {
-                                label: 'Create',
-                                value: 'create',
-                            },
-                            {
-                                label: 'Confirm',
-                                value: 'confirm',
-                            },
-                            {
-                                label: 'Delivering',
-                                value: 'delivering',
-                            },
-                            {
-                                label: 'Cancel',
-                                value: 'cancel',
-                            },
-                            {
-                                label: 'Success',
-                                value: 'success',
-                            },
-                        ]}
-                        onChange={(value) => setUpdateOrderStatus(value)}
-                        placeholder="Select a status"
-                    />
-                </div>
-                <Button onClick={handleUpdateOrderStatus} className="w-100 mt-4" type="primary">
-                    Yes
-                </Button>
-            </Modal>
         </div>
     )
 }
