@@ -2,7 +2,7 @@ import {useQuery} from "react-query";
 import DysonApi from "../axios/DysonApi.tsx";
 import ShopCard from "../compoments/ShopCard.tsx";
 import {useState} from "react";
-import {Pagination, Skeleton} from "antd";
+import {Pagination, Slider} from "antd";
 import DefaultLayout from "./layout/DefaultLayout.tsx";
 
 const TOTAL_PRODUCT_PER_PAGE = 10;
@@ -30,15 +30,16 @@ export default function () {
         limit: TOTAL_PRODUCT_PER_PAGE,
         sort: '-createdAt',
         category: '',
+        min: 0,
+        max: 100,
     });
+    const [priceRange, setPriceRange] = useState<any>([0, 100])
     const [isOpenFilterSort, setIsOpenFilterSort] = useState<boolean>(false);
-
     const {
         data: listCategory = [],
-        isLoading: isLoadingCategory,
         isSuccess: isSuccessCategory,
     } = useQuery(['getListCategory'], () => DysonApi.getAllCategory(), {
-        refetchOnWindowFocus: false,
+        refetchOnWindowFocus: true,
         onSuccess: (data: any) => {
             setDataSearch({
                 ...dataSearch,
@@ -49,12 +50,11 @@ export default function () {
 
     const {
         data: listProductData = {},
-        isLoading: isLoadingProduct,
         isSuccess: isSuccessProduct,
     } = useQuery(
         ['getListProduct', dataSearch],
         ({queryKey}) => DysonApi.getAllProduct(queryKey[1]), {
-            refetchOnWindowFocus: false,
+            refetchOnWindowFocus: true,
         },
     )
     const {items: listProduct = [], count: totalProduct} = listProductData
@@ -66,9 +66,6 @@ export default function () {
             page: 1,
         })
     }
-
-    if (isLoadingCategory || isLoadingProduct) return (<Skeleton active/>)
-
 
     return (
         <DefaultLayout>
@@ -84,11 +81,42 @@ export default function () {
                                         style={{cursor: "pointer"}}
                                         className={dataSearch.category === item.name ? "active" : ""}
                                         onClick={() => handleChangeCategory(item.name)}>
-                                        <a href="#">{item.name}</a>
+                                        <a>{item.name}</a>
                                     </li>
                                 ))
                             }
                         </ul>
+                    </div>
+                </div>
+                <div className="widget price mb-50">
+                    <h6 className="widget-title mb-30">Price</h6>
+
+                    <div className="widget-desc">
+                        <div className="slider-range">
+                            <Slider
+                                range={true}
+                                value={priceRange}
+                                onChange={(value) => {
+                                    setPriceRange(value)
+                                }}
+                                styles={{
+                                    track: {
+                                        backgroundColor: '#fbb710',
+                                    },
+                                    handle: {
+                                        backgroundColor: '#fbb710',
+                                    },
+                                }}
+                                onAfterChange={(value) => {
+                                    setDataSearch({
+                                        ...dataSearch,
+                                        min: value[0],
+                                        max: value[1],
+                                    })
+                                }}
+                            />
+                            <div className="range-price">${dataSearch.min} - ${dataSearch.max}</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -110,7 +138,7 @@ export default function () {
                                     }}>
                                         <p>Sort by</p>
                                         <div className={isOpenFilterSort ? "nice-select open" : "nice-select"}>
-                                            <span className={"current"}>
+                                            <span className={"current ml-1"}>
                                                 {SORT_BY.find((item: any) => item.value === dataSearch.sort)?.label ?? SORT_BY[0].label}
                                             </span>
                                             <ul className={"list"}>

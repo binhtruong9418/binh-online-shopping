@@ -1,12 +1,12 @@
-import {Button, Carousel, Image, Pagination, Popconfirm, Space, Table} from "antd";
-import { useState } from "react";
-import { useQuery } from "react-query";
+import {Button, Carousel, Image, Input, Pagination, Popconfirm, Select, Space, Table} from "antd";
+import {useState} from "react";
+import {useQuery} from "react-query";
 import DysonApi from "../../axios/DysonApi";
 import moment from "moment";
 import EditProductModal from "./EditProductModal";
 import AddProductModal from "./AddProductModal";
-import { toast } from "react-toastify";
-import { BiPencil, BiTrash } from "react-icons/bi";
+import {toast} from "react-toastify";
+import {BiPencil, BiTrash} from "react-icons/bi";
 
 
 export default function ProductTable(): JSX.Element {
@@ -18,7 +18,14 @@ export default function ProductTable(): JSX.Element {
         limit: 10,
         sort: '-createdAt',
         category: undefined,
+        name: ""
     });
+
+    const {
+        data: listCategory = []
+    } = useQuery('getAllCategory',async () => {
+        return await DysonApi.getAllCategory()
+    })
 
     const {
         data: listProductData = {},
@@ -60,7 +67,7 @@ export default function ProductTable(): JSX.Element {
                         <Carousel dotPosition="bottom">
                             {
                                 productImage.map((x, index) => (
-                                    <div key={index} style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                    <div key={index} style={{justifyContent: 'center', alignItems: 'center'}}>
                                         <Image
                                             src={x}
                                             preview={true}
@@ -84,7 +91,16 @@ export default function ProductTable(): JSX.Element {
             title: 'Description',
             dataIndex: 'productDescription',
             key: 'productDescription',
-            width: 100
+            width: 100,
+            render: (description: string) => {
+                const shortenDesription = description.length > 100
+                    ? description.substring(0, 100) + ' ...' : description
+                return (
+                    <div>
+                        {shortenDesription}
+                    </div>
+                )
+            }
         },
         {
             title: 'Category',
@@ -133,7 +149,7 @@ export default function ProductTable(): JSX.Element {
                             setIsEdit(true)
                         }}
                     >
-                        <BiPencil />
+                        <BiPencil/>
                     </Button>
                     <Popconfirm title="Sure to delete" onConfirm={() => handleDeleteProduct(record.key).then()}>
                         <Button type="text" danger>
@@ -166,14 +182,62 @@ export default function ProductTable(): JSX.Element {
 
     return (
         <div>
-            <Button type="primary" className="my-3" onClick={() => setIsAdd(true)}>New Product</Button>
+            <Button type="primary" className="my-3 ml-3" onClick={() => setIsAdd(true)}>New Product</Button>
+            <div className={'ml-3 mb-4'}>
+                <Space>
+                    <Input
+                        placeholder="Search by name"
+                        onChange={(e) => {
+                            setDataSearch({
+                                ...dataSearch,
+                                name: e.target.value,
+                            })
+                        }}
+                        style={{width: '300px'}}
+                    />
+                    <Select
+                        placeholder="Select category"
+                        style={{width: '200px'}}
+                        onChange={(value) => {
+                            setDataSearch({
+                                ...dataSearch,
+                                category: value,
+                            })
+                        }}
+                        value={dataSearch.category}
+                    >
+                        <Select.Option value={undefined}>All</Select.Option>
+                        {
+                            listCategory.map((category: any) => (
+                                <Select.Option key={category._id} value={category.name}>{category.name}</Select.Option>
+                            ))
+                        }
+                    </Select>
+                    <Select
+                        placeholder="Sort"
+                        style={{width: '150px'}}
+                        onChange={(value) => {
+                            setDataSearch({
+                                ...dataSearch,
+                                sort: value,
+                            })
+                        }}
+                        value={dataSearch.sort}
+                    >
+                        <Select.Option value={'-createdAt'}>Newest</Select.Option>
+                        <Select.Option value={'createdAt'}>Oldest</Select.Option>
+                        <Select.Option value={'-currentPrice'}>Price: High to Low</Select.Option>
+                        <Select.Option value={'currentPrice'}>Price: Low to High</Select.Option>
+                    </Select>
+                </Space>
+            </div>
             <Table
                 columns={columns}
                 dataSource={tableData}
                 pagination={false}
                 bordered
                 loading={isLoadingListProduct}
-                scroll={{ x: '50vw' }}
+                scroll={{x: '50vw'}}
             />
             <Pagination
                 total={totalProduct}
@@ -186,7 +250,7 @@ export default function ProductTable(): JSX.Element {
                 }}
                 current={dataSearch.page}
                 pageSize={dataSearch.limit}
-                style={{ textAlign: 'right', marginTop: 10 }}
+                style={{textAlign: 'right', marginTop: 10}}
             />
             {
                 isEdit && currentEditProduct &&
@@ -212,6 +276,6 @@ export default function ProductTable(): JSX.Element {
                     refetchProduct={refetch}
                 />
             }
-        </div >
+        </div>
     )
 }

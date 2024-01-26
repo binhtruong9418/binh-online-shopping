@@ -3,7 +3,6 @@ import {useState} from "react";
 import {useQuery, useQueryClient} from 'react-query';
 import DysonApi from '../axios/DysonApi';
 import {toast} from 'react-toastify';
-import {Skeleton} from 'antd';
 import {useCookies} from 'react-cookie';
 import DefaultLayout from "./layout/DefaultLayout";
 import {upperCaseFirstLetter} from "../utils";
@@ -29,9 +28,6 @@ export default function () {
             }
         }
     );
-
-
-    if (isLoading) return (<Skeleton active/>)
 
     const handleUpdateQuantity = (type: string) => {
         if (type === 'plus') {
@@ -174,8 +170,7 @@ export default function () {
                                         </div>
                                     </div>
                                     <button
-                                        type="submit"
-                                        name="addtocart"
+                                        type="button"
                                         className="btn amado-btn"
                                         onClick={handleAddToCart}
                                         disabled={isLoading}
