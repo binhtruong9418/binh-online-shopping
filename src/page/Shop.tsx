@@ -111,7 +111,7 @@ export default function () {
                                         <p>Sort by</p>
                                         <div className={isOpenFilterSort ? "nice-select open" : "nice-select"}>
                                             <span className={"current"}>
-                                                {SORT_BY.find((item: any) => item.value === dataSearch.sort).label}
+                                                {SORT_BY.find((item: any) => item.value === dataSearch.sort)?.label ?? SORT_BY[0].label}
                                             </span>
                                             <ul className={"list"}>
                                                 {
