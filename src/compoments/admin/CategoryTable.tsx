@@ -1,9 +1,10 @@
-import { Button, Form, Input, Popconfirm, Table, Typography } from "antd";
+import {Button, Form, Input, Popconfirm, Space, Table, Typography} from "antd";
 import { useQuery } from "react-query";
 import DysonApi from "../../axios/DysonApi";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import AddCategoryModal from "./AddCategoryModal";
+import {BiPencil, BiTrash} from "react-icons/bi";
 
 const EditableCell = ({
     editing,
@@ -48,7 +49,7 @@ export default function CategoryTable() {
         isLoading,
         refetch,
     } = useQuery('getListCategory', () => DysonApi.getAllCategory(), {
-        refetchOnWindowFocus: 'always',
+        refetchOnWindowFocus: false,
     }
     );
 
@@ -102,12 +103,6 @@ export default function CategoryTable() {
             editable: true,
         },
         {
-            title: 'Description',
-            dataIndex: 'description',
-            key: 'description',
-            editable: true,
-        },
-        {
             title: 'Action',
             key: 'action',
             render: (_: any, record: any) => {
@@ -127,16 +122,19 @@ export default function CategoryTable() {
                         </Popconfirm>
                     </span>
                 ) : (
-                    <div className="d-flex ">
-                        <Button disabled={editingKey !== ''} onClick={() => edit(record)}>
-                            Edit
+                    <Space>
+                        <Button
+                            type="text"
+                            disabled={editingKey !== ''} onClick={() => edit(record)}
+                        >
+                            <BiPencil />
                         </Button>
                         <Popconfirm title="Sure to delete" onConfirm={() => handleDeleteCategory(record.key).then()}>
-                            <Button danger className="ml-3">
-                                Delete
+                            <Button type="text" danger>
+                                <BiTrash/>
                             </Button>
                         </Popconfirm>
-                    </div>
+                    </Space>
                 );
             },
         }

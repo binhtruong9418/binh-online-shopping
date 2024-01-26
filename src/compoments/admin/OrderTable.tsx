@@ -1,8 +1,7 @@
-import { Button, Divider, Modal, Select, Table, Tag } from "antd";
+import {Button, Divider, Modal, Pagination, Select, Table, Tag} from "antd";
 import moment from "moment";
 import { useState } from "react";
 import { useQuery } from "react-query";
-import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, SyncOutlined } from "@ant-design/icons";
 import DysonApi from "../../axios/DysonApi";
 import { toast } from "react-toastify";
 
@@ -58,15 +57,21 @@ export default function OrderTable(): JSX.Element {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [updateOrderId, setUpdateOrderId] = useState<string>("");
     const [updateOrderStatus, setUpdateOrderStatus] = useState("");
+    const [dataSearch, setDataSearch] = useState<any>({
+        page: 1,
+        limit: 10,
+        sort: '-createdAt',
+    })
 
     const {
-        data: listOrder = [],
+        data: {listOrder, totalOrder} = {listOrder: [], totalOrder: 0},
         isLoading: isLoadingListOrder,
         isError: isErrorListOrder,
         refetch
-    } = useQuery(['getAllOrder'], async () => {
-        const listOrder = await DysonApi.getAllOrder();
-        const listOrderTable = await Promise.all(listOrder.map(async (order: any) => {
+    } = useQuery(['getAllOrder', dataSearch], async ({queryKey}) => {
+        const listOrderData = await DysonApi.getAllOrder(queryKey[1]);
+        const {items, count} = listOrderData
+        const listOrderTable = await Promise.all(items.map(async (order: any) => {
             const productData = await Promise.all(order.products.map(async (e: any) => {
                 const product = await DysonApi.getProductById(e.productId);
                 return {
@@ -87,7 +92,10 @@ export default function OrderTable(): JSX.Element {
             }
         }))
 
-        return listOrderTable
+        return {
+            listOrder: listOrderTable,
+            totalOrder: count
+        }
     }, {
         refetchOnWindowFocus: false,
     })
@@ -99,7 +107,7 @@ export default function OrderTable(): JSX.Element {
             dataIndex: 'orderId',
             key: 'orderId',
             render: (orderId: number) => <p>{orderId}</p>,
-            width: 100,
+            width: 50,
         },
         {
             title: 'Order Date',
@@ -111,8 +119,7 @@ export default function OrderTable(): JSX.Element {
                     <p>{moment(orderDate).format('DD/MM/YYYY')}</p>
                 </div>
             ),
-            width: 120,
-            sorter: (a: any, b: any) => moment(a.orderDate).unix() - moment(b.orderDate).unix(),
+            width: 100,
         },
         {
             title: 'Shipping Detail',
@@ -128,77 +135,25 @@ export default function OrderTable(): JSX.Element {
                     <p>Distric/Town: {shippingDetail.district}</p>
                     <p>Ward: {shippingDetail.ward}</p>
                 </div>,
-            width: 300,
+            width: 400,
         },
         {
             title: 'Note',
             dataIndex: 'note',
             key: 'note',
             render: (note: string) => <p>{note}</p>,
-            width: 200,
+            width: 100,
         },
         {
             title: 'Order Status',
             dataIndex: 'orderStatus',
             key: 'orderStatus',
             render: (orderStatus: string) => {
-                switch (orderStatus) {
-                    case 'create':
-                        return (
-                            <Tag icon={<ClockCircleOutlined />} color="default">
-                                Create
-                            </Tag>
-                        )
-                    case 'confirm':
-                        return (
-                            <Tag icon={<CheckCircleOutlined />} color="processing">
-                                Confirm
-                            </Tag>
-                        )
-                    case 'delivering':
-                        return (
-                            <Tag icon={<SyncOutlined spin />} color="processing">
-                                Delivering
-                            </Tag>
-                        )
-                    case 'cancel':
-                        return (
-                            <Tag icon={<CloseCircleOutlined />} color="error">
-                                Canceled
-                            </Tag>
-                        )
-                    case 'success':
-                        return (
-                            <Tag icon={<CheckCircleOutlined />} color="success">
-                                Completed
-                            </Tag>
-                        )
-                }
+                return (
+                    <Tag>{orderStatus}</Tag>
+                )
             },
             width: 120,
-            filters: [
-                {
-                    text: 'Create',
-                    value: 'create',
-                },
-                {
-                    text: 'Confirm',
-                    value: 'confirm',
-                },
-                {
-                    text: 'Delivering',
-                    value: 'delivering',
-                },
-                {
-                    text: 'Cancel',
-                    value: 'cancel',
-                },
-                {
-                    text: 'Success',
-                    value: 'success',
-                },
-            ],
-            onFilter: (value: any, record: any) => record.orderStatus.indexOf(value) === 0,
         },
         {
             title: 'Total',
@@ -206,7 +161,6 @@ export default function OrderTable(): JSX.Element {
             key: 'total',
             render: (total: number) => <p>{total}$</p>,
             width: 100,
-            sorter: (a: any, b: any) => a.total - b.total,
         },
         {
             title: 'Action',
@@ -257,10 +211,23 @@ export default function OrderTable(): JSX.Element {
                         return expandableProduct(record.products)
                     },
                 }}
-                pagination={{ pageSize: 10 }}
+                pagination={false}
                 bordered
                 scroll={{ x: '50vw' }}
                 loading={isLoadingListOrder}
+            />
+            <Pagination
+                className="mt-4"
+                current={dataSearch.page}
+                total={totalOrder}
+                pageSize={dataSearch.limit}
+                onChange={(page, pageSize) => {
+                    setDataSearch({
+                        ...dataSearch,
+                        page,
+                        limit: pageSize || 10,
+                    })
+                }}
             />
             <Modal
                 open={isModalVisible}

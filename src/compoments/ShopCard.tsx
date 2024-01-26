@@ -4,10 +4,10 @@ import PropTypes, { InferProps } from 'prop-types'
 
 export default function ShopCard({ id, images, name, currentPrice }: InferProps<typeof ShopCard.propTypes>) {
     return (
-        <Link className="col-12 col-sm-6 col-md-12 col-xl-6" to={`/product/${id}`}>
+        <Link className="col-12 col-sm-6 col-md-12 col-xl-4" to={`/product/${id}`}>
             <div className="single-product-wrapper" style={{ cursor: 'pointer' }} >
                 <div className="product-img">
-                    <img src={images[0]} alt="" />
+                    <img src={images[0]} className={''} alt="" />
                     <img className="hover-img" src={images[1] ? images[1] : images[0]} alt="" />
                 </div>
                 <div className="product-description d-flex align-items-center justify-content-between">

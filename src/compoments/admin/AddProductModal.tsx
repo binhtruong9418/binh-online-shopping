@@ -47,7 +47,7 @@ const AddProductModal = ({
                 price: productPrice,
                 quantity: productQuantity,
                 images: listNewImages,
-                discount: productDiscount
+                discount: productDiscount ?? 0
             })
             await refetchProduct()
             toast.success("Create product successfully");
@@ -224,16 +224,13 @@ const AddProductModal = ({
 
                     <Form.Item
                         name="productDiscount"
-                        rules={[{
-                            required: true,
-                            message: 'Please input discount'
-                        }]}
                     >
                         <InputNumber
                             placeholder="Discount"
                             addonAfter='%'
                             className="w-100"
                             size="large"
+                            defaultValue={0}
                         />
                     </Form.Item>
 

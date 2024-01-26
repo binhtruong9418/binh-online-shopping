@@ -1,115 +1,36 @@
-import { Button, Carousel, Image, Input, InputRef, Popconfirm, Space, Table } from "antd";
-import { useRef, useState } from "react";
-import { FilterConfirmProps } from "antd/lib/table/interface";
-import { SearchOutlined } from "@ant-design/icons";
+import {Button, Carousel, Image, Pagination, Popconfirm, Space, Table} from "antd";
+import { useState } from "react";
 import { useQuery } from "react-query";
 import DysonApi from "../../axios/DysonApi";
 import moment from "moment";
 import EditProductModal from "./EditProductModal";
 import AddProductModal from "./AddProductModal";
 import { toast } from "react-toastify";
+import { BiPencil, BiTrash } from "react-icons/bi";
 
 
 export default function ProductTable(): JSX.Element {
-    const [searchText, setSearchText] = useState('');
-    const [searchedColumn, setSearchedColumn] = useState('');
-    const searchInput = useRef<InputRef>(null);
     const [currentEditProduct, setCurrentEditProduct] = useState<any>(null)
     const [isEdit, setIsEdit] = useState<boolean>(false)
     const [isAdd, setIsAdd] = useState<boolean>(false)
+    const [dataSearch, setDataSearch] = useState<any>({
+        page: 1,
+        limit: 10,
+        sort: '-createdAt',
+        category: undefined,
+    });
 
     const {
-        data: listProduct = [],
+        data: listProductData = {},
         isLoading: isLoadingListProduct,
         isError: isErrorListProduct,
         refetch
-    } = useQuery(['getAllProduct'], () => DysonApi.getAllProduct(), {
+    } = useQuery(['getAllProduct', dataSearch], ({queryKey}) => DysonApi.getAllProduct(queryKey[1]), {
         refetchOnWindowFocus: false,
     })
 
+    const {items: listProduct = [], count: totalProduct} = listProductData
 
-    const handleSearch = (
-        selectedKeys: string[],
-        confirm: (param?: FilterConfirmProps) => void,
-        dataIndex: any,
-    ) => {
-        confirm();
-        setSearchText(selectedKeys[0]);
-        setSearchedColumn(dataIndex);
-    };
-
-    const handleReset = (clearFilters: () => void) => {
-        clearFilters();
-        setSearchText('');
-    };
-
-    const getColumnSearchProps = (dataIndex: any) => ({
-        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }: any) => (
-            <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
-                <Input
-                    ref={searchInput}
-                    placeholder={`Search ${dataIndex}`}
-                    value={selectedKeys[0]}
-                    onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-                    onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-                    style={{ marginBottom: 8, display: 'block' }}
-                />
-                <Space>
-                    <Button
-                        type="primary"
-                        onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-                        icon={<SearchOutlined />}
-                        size="small"
-                        style={{ width: 90 }}
-                    >
-                        Search
-                    </Button>
-                    <Button
-                        onClick={() => clearFilters && handleReset(clearFilters)}
-                        size="small"
-                        style={{ width: 90 }}
-                    >
-                        Reset
-                    </Button>
-                    <Button
-                        type="link"
-                        size="small"
-                        onClick={() => {
-                            close();
-                        }}
-                    >
-                        close
-                    </Button>
-                </Space>
-            </div>
-        ),
-        filterIcon: (filtered: boolean) => (
-            <SearchOutlined style={{ color: filtered ? '#1677ff' : undefined }} />
-        ),
-        onFilter: (value: any, record: any) =>
-            record[dataIndex]
-                .toString()
-                .toLowerCase()
-                .includes((value as string).toLowerCase()),
-        onFilterDropdownOpenChange: (visible: boolean) => {
-            if (visible) {
-                setTimeout(() => searchInput.current?.select(), 100);
-            }
-        },
-        render: (text: string) => {
-            const isSearchColumn = searchedColumn === dataIndex;
-            if (isSearchColumn) {
-                const parts = text.split(new RegExp(`(${searchText})`, 'gi'));
-                return <span> {parts.map((part, i) =>
-                    searchText && part.toLowerCase() === searchText.toLowerCase() ?
-                        <span key={i} style={{ backgroundColor: '#ffc069' }}>{part}</span> :
-                        part
-                )} </span>;
-            } else {
-                return <p>{text}</p>
-            }
-        }
-    });
 
     const handleDeleteProduct = async (id: string) => {
         try {
@@ -157,20 +78,18 @@ export default function ProductTable(): JSX.Element {
             title: 'Name',
             dataIndex: 'productName',
             key: 'productName',
-            ...getColumnSearchProps('productName'),
             width: 200
         },
         {
             title: 'Description',
             dataIndex: 'productDescription',
             key: 'productDescription',
-            width: 150
+            width: 100
         },
         {
             title: 'Category',
             dataIndex: 'productCategory',
             key: 'productCategory',
-            ...getColumnSearchProps('productCategory'),
             width: 120
         },
         {
@@ -178,7 +97,6 @@ export default function ProductTable(): JSX.Element {
             dataIndex: 'productPrice',
             key: 'productPrice',
             render: (productPrice: number) => <p>{productPrice}$</p>,
-            sorter: (a: any, b: any) => a.productPrice - b.productPrice,
             width: 100
         },
         {
@@ -186,7 +104,6 @@ export default function ProductTable(): JSX.Element {
             dataIndex: 'productDiscount',
             key: 'productDiscount',
             render: (productDiscount: number) => <p>{productDiscount}%</p>,
-            sorter: (a: any, b: any) => a.productDiscount - b.productDiscount,
             width: 100
         },
         {
@@ -194,7 +111,6 @@ export default function ProductTable(): JSX.Element {
             dataIndex: 'productQuantity',
             key: 'productQuantity',
             render: (productQuantity: number) => <p>{productQuantity}</p>,
-            sorter: (a: any, b: any) => a.productQuantity - b.productQuantity,
             width: 100
         },
         {
@@ -202,41 +118,45 @@ export default function ProductTable(): JSX.Element {
             dataIndex: 'createdAt',
             key: 'createdAt',
             render: (createdAt: string) => <p>{moment(createdAt).format("DD/MM/YYYY")}</p>,
-            sorter: (a: any, b: any) => moment(a.createdAt).unix() - moment(b.createdAt).unix(),
             width: 120
         },
         {
             title: 'Action',
             key: 'action',
             render: (_: any, record: any) => (
-                <div>
-                    <Button onClick={() => {
-                        setCurrentEditProduct(record)
-                        setIsEdit(true)
-                    }}>Edit</Button>
 
+                <Space>
+                    <Button
+                        type="text"
+                        onClick={() => {
+                            setCurrentEditProduct(record)
+                            setIsEdit(true)
+                        }}
+                    >
+                        <BiPencil />
+                    </Button>
                     <Popconfirm title="Sure to delete" onConfirm={() => handleDeleteProduct(record.key).then()}>
-                        <Button danger className="mt-3">
-                            Delete
+                        <Button type="text" danger>
+                            <BiTrash/>
                         </Button>
                     </Popconfirm>
-                </div>
+                </Space>
             ),
             width: 100
         }
     ]
 
-    const listProductTable = listProduct.map((product: any) => {
+    const tableData = listProduct.map((product: any) => {
         return {
-            key: product._id,
-            productImage: product.images,
-            productName: product.name,
-            productCategory: product.category,
-            productDescription: product.description,
-            productPrice: product.price,
-            productQuantity: product.quantity,
-            productDiscount: product.discount,
-            createdAt: product.createdAt,
+            key: product?._id,
+            productImage: product?.images,
+            productName: product?.name,
+            productCategory: product?.category,
+            productDescription: product?.description,
+            productPrice: product?.price,
+            productQuantity: product?.quantity,
+            productDiscount: product?.discount,
+            createdAt: product?.createdAt,
         }
     })
 
@@ -249,11 +169,24 @@ export default function ProductTable(): JSX.Element {
             <Button type="primary" className="my-3" onClick={() => setIsAdd(true)}>New Product</Button>
             <Table
                 columns={columns}
-                dataSource={listProductTable}
-                pagination={{ pageSize: 15 }}
+                dataSource={tableData}
+                pagination={false}
                 bordered
                 loading={isLoadingListProduct}
                 scroll={{ x: '50vw' }}
+            />
+            <Pagination
+                total={totalProduct}
+                onChange={(page, pageSize) => {
+                    setDataSearch({
+                        ...dataSearch,
+                        page,
+                        limit: pageSize || 10,
+                    })
+                }}
+                current={dataSearch.page}
+                pageSize={dataSearch.limit}
+                style={{ textAlign: 'right', marginTop: 10 }}
             />
             {
                 isEdit && currentEditProduct &&

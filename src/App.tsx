@@ -1,8 +1,8 @@
 import '../public/css/core-style.css'
-import { BrowserRouter } from "react-router-dom";
+import {BrowserRouter} from "react-router-dom";
 import MainRouter from "./routes";
-import { useCookies } from "react-cookie";
-import { useEffect } from "react";
+import {useCookies} from "react-cookie";
+import {useEffect} from "react";
 import 'react-toastify/dist/ReactToastify.css';
 import DysonApi from './axios/DysonApi';
 
@@ -11,16 +11,15 @@ function App() {
     useEffect(() => {
         if (!cookies.cart) {
             DysonApi.createCart().then((res) => {
-                setCookie('cart', res, { path: '/' });
+                setCookie('cart', res, {path: '/'});
             })
         }
     }, [cookies])
 
 
-
     return (
         <BrowserRouter>
-            <MainRouter />
+            <MainRouter/>
         </BrowserRouter>
     )
 }

@@ -2,57 +2,34 @@ import AxiosClient from "./AxiosClient.tsx";
 import axios from "axios";
 
 const DysonApi = {
-    //Product
-    getNewProduct: async (): Promise<any> => {
-        const url = "product/new-product"
-        const response = await AxiosClient.get(url);
-        return response.data
-    },
 
+    //Product
     getAllProduct: async (params = {}): Promise<any> => {
         const url = "product"
         const response = await AxiosClient.get(url, { params });
         return response.data
     },
 
-    createNewProduct: async (data: any): Promise<any> => {
+    addProduct: async (data: any): Promise<any> => {
         const url = "product"
         const response = await AxiosClient.post(url, data);
         return response.data
     },
 
     getProductById: async (id: string): Promise<any> => {
-        const url = `product/find-by-id/${id}`
-        const response = await AxiosClient.get(url);
-        return response.data
-    },
-
-    getAllProductByCategory: async (category: string): Promise<any> => {
-        const url = `product/find-by-category/${category}`
-        const response = await AxiosClient.get(url);
-        return response.data
-    },
-
-    getAllProductByName: async (name: string): Promise<any> => {
-        const url = `product/find-by-name/${name}`
+        const url = `product/${id}`
         const response = await AxiosClient.get(url);
         return response.data
     },
 
     updateProductById: async (id: string, data: any) => {
-        const url = `product/update/${id}`
+        const url = `product/${id}`
         const response = await AxiosClient.put(url, data);
         return response.data
     },
 
-    addProduct: async (data: any) => {
-        const url = `product`
-        const response = await AxiosClient.post(url, data);
-        return response.data
-    },
-
     deleteProductById: async (id: string) => {
-        const url = `product/delete/${id}`
+        const url = `product/${id}`
         const response = await AxiosClient.delete(url);
         return response.data
     },
@@ -124,13 +101,13 @@ const DysonApi = {
     },
 
     getAllOrder: async (params = {}): Promise<any> => {
-        const url = "order/find-all"
+        const url = "order/"
         const response = await AxiosClient.get(url, { params });
         return response.data
     },
 
     getOrderById: async (id: string): Promise<any> => {
-        const url = `order/find-by-id/${id}`
+        const url = `order/${id}`
         const response = await AxiosClient.get(url);
         return response.data
     },

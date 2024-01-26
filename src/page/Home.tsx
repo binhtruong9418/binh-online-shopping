@@ -5,12 +5,17 @@ import { Skeleton } from "antd";
 import DefaultLayout from "./layout/DefaultLayout.tsx";
 
 export default function () {
-    const { data: newProduct, isSuccess: getNewProductSs, isLoading } = useQuery(
-        ["airDropApi.getNewProduct"],
-        () => DysonApi.getNewProduct(),
+    const { data: newProductData = {}, isSuccess: getNewProductSs, isLoading } = useQuery(
+        ["getNewProduct"],
+        () => DysonApi.getAllProduct({
+            limit: 20,
+            page: 1,
+            sort: "-createdAt",
+        }),
         {
             refetchOnWindowFocus: "always",
         })
+    const { items: listNewProduct = []} = newProductData
 
     if (isLoading) return (<Skeleton />)
 
@@ -19,7 +24,7 @@ export default function () {
             <div className="products-catagories-area clearfix">
                 <div className="amado-pro-catagory clearfix row">
                     {
-                        getNewProductSs && newProduct.map((e: any) => (
+                        getNewProductSs && listNewProduct.map((e: any) => (
                             <ProductCard
                                 key={e._id}
                                 item={{
