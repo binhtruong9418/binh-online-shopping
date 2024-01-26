@@ -70,14 +70,14 @@ export default function TrackingOrderDetail() {
                                                 <div
                                                     className={'font-bold'}>{moment(orderDetail?.createdAt).format('YYYY-MM-DD HH:mm:ss')}</div>
                                                 <div>
-                                                    Order has been created. Please wait for the order to be confirmed.
+                                                    Order has been created. Please wait for the order to be confirmed. Please call hotline 0972 230 803 (during office hours) if you want to change order information before your order is TRANSMITTED TO DELIVERY.
                                                 </div>
                                             </div>
                                         )
                                     },
                                     {
                                         label: 'Order confirmed',
-                                        color: 'green',
+                                        color: 'blue',
                                         dot: <FiBox style={{fontSize: '17px'}}/>,
                                         children: orderDetail?.confirmTime ? (
                                             <div>
@@ -148,7 +148,7 @@ export default function TrackingOrderDetail() {
                                 <Descriptions.Item
                                     label={"Customer district"}>{orderDetail?.shippingDetail?.district}</Descriptions.Item>
                                 <Descriptions.Item
-                                    label={"Customer city"}>{orderDetail?.shippingDetail?.city}</Descriptions.Item>
+                                    label={"Customer province"}>{orderDetail?.shippingDetail?.province}</Descriptions.Item>
 
                             </Descriptions>
                         </div>
