@@ -34,7 +34,7 @@ const AddProductModal = ({
 
         try {
             setIsLoading(true);
-            let listNewImages = []
+            let listNewImages: any[] = []
             if (listImage.length > 0) {
                 listNewImages = await Promise.all(listImage.map((item: any) => {
                     return DysonApi.uploadFile(item)

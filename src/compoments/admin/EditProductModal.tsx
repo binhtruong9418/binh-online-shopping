@@ -40,7 +40,7 @@ const EditProductModal = ({ isVisible,
 
         try {
             setIsLoading(true);
-            let listNewImages = []
+            let listNewImages: any[] = []
             if (listImage.length > 0) {
                 const res = await Promise.all(
                     listImage.map((item: any) => {
