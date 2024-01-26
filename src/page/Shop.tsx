@@ -33,6 +33,7 @@ export default function () {
         min: 0,
         max: 100,
     });
+
     const [priceRange, setPriceRange] = useState<any>([0, 100])
     const [isOpenFilterSort, setIsOpenFilterSort] = useState<boolean>(false);
     const {

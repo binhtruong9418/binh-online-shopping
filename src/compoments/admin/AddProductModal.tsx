@@ -94,7 +94,7 @@ const AddProductModal = ({
         >
             <div>
                 <Typography.Title level={4}>
-                    Edit Product
+                    Create Product
                 </Typography.Title>
 
                 <Space

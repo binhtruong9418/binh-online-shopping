@@ -165,7 +165,7 @@ export default function CategoryTable() {
 
     return (
         <>
-            <Button type='primary' className="my-3" onClick={() => setIsAdd(true)}>New Category</Button>
+            <Button type='primary' className="my-3 ml-3" onClick={() => setIsAdd(true)}>New Category</Button>
             <Form form={form} component={false}>
                 <Table
                     components={{

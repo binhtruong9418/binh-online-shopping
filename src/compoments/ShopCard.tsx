@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import CardImg from '../assets/img/cart.png'
 import PropTypes, { InferProps } from 'prop-types'
+import {upperCaseFirstLetter} from "../utils";
 
 export default function ShopCard({ id, images, name, currentPrice }: InferProps<typeof ShopCard.propTypes>) {
     return (
@@ -15,7 +16,7 @@ export default function ShopCard({ id, images, name, currentPrice }: InferProps<
                         <div className="line"></div>
                         <p className="product-price">${currentPrice.toFixed(2)}</p>
                         <a href="#">
-                            <h6>{name}</h6>
+                            <h6>{upperCaseFirstLetter(name)}</h6>
                         </a>
                     </div>
                     <div className="ratings-cart text-right">

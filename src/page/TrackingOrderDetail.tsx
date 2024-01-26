@@ -45,8 +45,9 @@ export default function TrackingOrderDetail() {
             <div className="single-product-area section-padding-100 clearfix">
                 <div className="container-fluid">
                     <div className="row mb-5">
-                        <div className="col-12 text-left">
-                            <Typography.Title level={3}>Order id: {orderId}</Typography.Title>
+                        <div className="col-12 text-left mt-3 mt-sm-0">
+                            <Typography.Title level={3} style={{marginBottom: '0px'}}>Order id:</Typography.Title>
+                            <Typography.Title level={3}>{orderId}</Typography.Title>
                         </div>
                     </div>
                     <div className="row">
@@ -88,7 +89,7 @@ export default function TrackingOrderDetail() {
                                                 </div>
                                             </div>
                                         ) : (
-                                            <div style={{height: '50px'}}/>
+                                            <div style={{height: '60px'}}/>
                                         )
                                     },
                                     {
@@ -105,7 +106,7 @@ export default function TrackingOrderDetail() {
                                                 </div>
                                             </div>
                                         ) : (
-                                            <div style={{height: '50px'}}/>
+                                            <div style={{height: '60px'}}/>
                                         )
                                     },
                                     {
@@ -121,7 +122,7 @@ export default function TrackingOrderDetail() {
                                                 </div>
                                             </div>
                                         ) : (
-                                            <div style={{height: '50px'}}/>
+                                            <div style={{height: '60px'}}/>
                                         )
 
                                     }
@@ -162,9 +163,12 @@ export default function TrackingOrderDetail() {
                                 marginBottom: '20px'
                             }}/>
                             {
-                                orderDetail?.products?.map((e: any) => {
+                                orderDetail?.products?.map((e: any, index: number) => {
                                     return (
                                         <>
+                                            {
+                                                index !== 0 && <Divider />
+                                            }
                                             <div
                                                 className={'d-flex align-items-center mb-3'}
                                             >
@@ -176,7 +180,6 @@ export default function TrackingOrderDetail() {
                                                     <div className={'ml-3 mt-5'}>${e.quantity * e?.currentPrice}</div>
                                                 </div>
                                             </div>
-                                            <Divider dashed={true}/>
                                         </>
                                     )
                                 })

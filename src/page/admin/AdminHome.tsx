@@ -6,6 +6,7 @@ import CategoryTable from '../../compoments/admin/CategoryTable';
 import OrderTable from '../../compoments/admin/OrderTable';
 import { HomeOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import Logo from "../../assets/img/logo.png";
 
 const { Header, Content, Sider } = Layout;
 
@@ -29,8 +30,11 @@ const AdminHome = () => {
             <Sider
                 breakpoint="lg"
                 collapsedWidth="0"
+                collapsible={true}
             >
-                <div className="demo-logo-vertical" />
+                <div className="logo my-3">
+                    <a href="#"><img src={Logo} alt=""/></a>
+                </div>
                 <Menu
                     theme="dark"
                     mode="inline"
@@ -38,19 +42,19 @@ const AdminHome = () => {
                     onClick={(e) => setTab(e.key)}
                     items={[
                         {
-                            icon: <InboxOutlined />,
+                            icon: <InboxOutlined/>,
                             label: 'Manage Product',
                             key: '1',
                         },
 
                         {
-                            icon: <InboxOutlined />,
+                            icon: <InboxOutlined/>,
                             label: 'Manage Category',
                             key: '2',
                         },
 
                         {
-                            icon: <InboxOutlined />,
+                            icon: <InboxOutlined/>,
                             label: 'Manage Order',
                             key: '3',
                         }
@@ -58,7 +62,8 @@ const AdminHome = () => {
                 />
             </Sider>
             <Layout>
-                <Header style={{ padding: 20, background: '#fff' }} className='d-flex justify-content-between align-items-center'>
+                <Header style={{padding: 20, background: '#fff'}}
+                        className='d-flex justify-content-between align-items-center'>
                     <Link to='/'>
                         <HomeOutlined style={{ fontSize: 25, cursor: 'pointer' }} />
                     </Link>
