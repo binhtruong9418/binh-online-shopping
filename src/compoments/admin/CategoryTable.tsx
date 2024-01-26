@@ -1,6 +1,6 @@
 import {Button, Form, Input, Popconfirm, Space, Table, Typography} from "antd";
 import { useQuery } from "react-query";
-import DysonApi from "../../axios/DysonApi";
+import DysonApi from "../../axios/DysonApi.ts";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import AddCategoryModal from "./AddCategoryModal";

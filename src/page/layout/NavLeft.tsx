@@ -4,7 +4,7 @@ import MobileNav from "./MobileNav.tsx";
 import {useState} from "react";
 import {Link, useLocation} from "react-router-dom";
 import {useQuery} from 'react-query';
-import DysonApi from '../../axios/DysonApi.tsx';
+import DysonApi from '../../axios/DysonApi.ts';
 import {useCookies} from 'react-cookie';
 
 export default function () {
@@ -43,6 +43,7 @@ export default function () {
                     <ul>
                         <li className={pathname === '/' ? 'active' : ''}><Link to={'/'}>Home</Link></li>
                         <li className={pathname === '/shop' ? 'active' : ''}><Link to={'/shop'}>Shop</Link></li>
+                        <li className={pathname === '/tracking-order' ? 'active' : ''}><Link to={'/tracking-order'}>Tracking Order</Link></li>
                         {
                             userInfo && jwtToken && (
                                 <li><Link to={'/admin'}>Admin</Link></li>

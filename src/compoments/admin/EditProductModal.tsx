@@ -3,7 +3,7 @@ import { useState, useRef } from 'react';
 import { toast } from 'react-toastify'
 
 import { CloudUploadOutlined, DeleteOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons";
-import DysonApi from '../../axios/DysonApi';
+import DysonApi from '../../axios/DysonApi.ts';
 import { useQuery } from 'react-query';
 const IMAGE_TYPES = ["image/png", "image/jpeg"];
 

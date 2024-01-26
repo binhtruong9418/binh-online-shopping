@@ -2,7 +2,7 @@ import { useState } from 'react'
 import AddressJson from '../config/AddressJson.json'
 import { toast } from 'react-toastify'
 import { useQuery } from 'react-query'
-import DysonApi from '../axios/DysonApi'
+import DysonApi from '../axios/DysonApi.ts'
 import { useCookies } from 'react-cookie'
 import { useNavigate } from 'react-router-dom'
 import DefaultLayout from './layout/DefaultLayout'
@@ -89,7 +89,7 @@ const Checkout = () => {
             }
             const newOrder = await DysonApi.createOrder(data)
             if(isCod) {
-                toast.success('Order success', { position: 'top-left' })
+                toast.success('Order success')
                 navigate(`/checkout/success/${newOrder._id}`)
             } else {
                 const vnpayUrl = await DysonApi.createVnpayPaymentUrl(newOrder._id)

@@ -1,4 +1,4 @@
-import AxiosClient from "./AxiosClient.tsx";
+import AxiosClient from "./AxiosClient.ts";
 import axios from "axios";
 
 const DysonApi = {

@@ -4,7 +4,7 @@ import MainRouter from "./routes";
 import {useCookies} from "react-cookie";
 import {useEffect} from "react";
 import 'react-toastify/dist/ReactToastify.css';
-import DysonApi from './axios/DysonApi';
+import DysonApi from './axios/DysonApi.ts';
 
 function App() {
     const [cookies, setCookie] = useCookies(['cart']);

@@ -1,7 +1,7 @@
 import { Button, Form, Input, Modal, Typography } from 'antd';
 import { useState } from 'react';
 import { toast } from 'react-toastify'
-import DysonApi from '../../axios/DysonApi';
+import DysonApi from '../../axios/DysonApi.ts';
 
 
 const AddCategoryModal = ({

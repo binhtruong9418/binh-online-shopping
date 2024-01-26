@@ -1,5 +1,5 @@
 import {useQuery} from "react-query";
-import DysonApi from "../axios/DysonApi.tsx";
+import DysonApi from "../axios/DysonApi.ts";
 import ShopCard from "../compoments/ShopCard.tsx";
 import {useState} from "react";
 import {Pagination, Slider} from "antd";

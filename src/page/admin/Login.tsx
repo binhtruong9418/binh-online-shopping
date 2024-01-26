@@ -1,4 +1,4 @@
-import DysonApi from "../../axios/DysonApi"
+import DysonApi from "../../axios/DysonApi.ts"
 import { useState } from "react"
 import { toast } from "react-toastify"
 import { useConnection } from "../../redux/connection"

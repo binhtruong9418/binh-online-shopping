@@ -1,6 +1,6 @@
 import ProductCard from "../compoments/home/ProductCard.tsx";
 import { useQuery } from "react-query";
-import DysonApi from "../axios/DysonApi.tsx";
+import DysonApi from "../axios/DysonApi.ts";
 import { Skeleton } from "antd";
 import DefaultLayout from "./layout/DefaultLayout.tsx";
 

@@ -10,6 +10,8 @@ import Checkout from "../page/Checkout.tsx";
 import CheckoutSuccess from "../page/CheckoutSuccess.tsx";
 import Login from "../page/admin/Login.tsx";
 import AdminHome from "../page/admin/AdminHome.tsx";
+    import TrackingOrder from "../page/TrackingOrder.tsx";
+    import TrackingOrderDetail from "../page/TrackingOrderDetail.tsx";
 
 function MainRouter() {
     return (
@@ -18,6 +20,8 @@ function MainRouter() {
             <Route path="/*" element={<Home />} />
             <Route path="/shop/*" element={<Shop />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/tracking-order" element={<TrackingOrder />} />
+            <Route path={"/tracking-order/:id"} element={<TrackingOrderDetail />} />
             <Route path='/product/:id' element={<ProductDetail />} />
             <Route path='/404' element={<NotFoundPage />} />
             <Route path='/500' element={<ServerErrorPage />} />

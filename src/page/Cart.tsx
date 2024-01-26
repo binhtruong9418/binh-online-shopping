@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from "react-query";
 import ProductCardInfo from "../compoments/ProductCardInfo.tsx";
 import { useCookies } from "react-cookie";
-import DysonApi from "../axios/DysonApi.tsx";
+import DysonApi from "../axios/DysonApi.ts";
 import { Skeleton } from "antd";
 import { toast } from "react-toastify";
 import { useState } from "react";

@@ -38,3 +38,19 @@ export const ORDER_STATUS_LABEL = [
         value: ORDER_STATUS.DELIVERED
     }
 ]
+
+export enum PaymentMethod {
+    COD = 'cod',
+    VNPAY = 'vnpay',
+}
+
+export const PAYMENT_METHOD_LABEL = [
+    {
+        label: "COD",
+        value: PaymentMethod.COD
+    },
+    {
+        label: "VNPay",
+        value: PaymentMethod.VNPAY
+    }
+]

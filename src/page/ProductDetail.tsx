@@ -1,7 +1,7 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useState} from "react";
 import {useQuery, useQueryClient} from 'react-query';
-import DysonApi from '../axios/DysonApi';
+import DysonApi from '../axios/DysonApi.ts';
 import {toast} from 'react-toastify';
 import {useCookies} from 'react-cookie';
 import DefaultLayout from "./layout/DefaultLayout";

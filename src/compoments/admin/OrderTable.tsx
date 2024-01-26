@@ -2,7 +2,7 @@ import {Button, Divider, Modal, Pagination, Popconfirm, Select, Space, Table, Ta
 import moment from "moment";
 import { useState } from "react";
 import { useQuery } from "react-query";
-import DysonApi from "../../axios/DysonApi";
+import DysonApi from "../../axios/DysonApi.ts";
 import { toast } from "react-toastify";
 import {ORDER_STATUS, ORDER_STATUS_LABEL} from "../../constants";
 import {CheckCircleOutlined, MinusCircleOutlined, SyncOutlined,} from "@ant-design/icons";
@@ -66,6 +66,7 @@ export default function OrderTable(): JSX.Element {
         limit: 10,
         sort: '-createdAt',
         status: undefined,
+        paymentMethod: undefined,
     })
 
     const {
@@ -91,9 +92,10 @@ export default function OrderTable(): JSX.Element {
                 orderDate: order.createdAt,
                 shippingDetail: order.shippingDetail,
                 note: order.note,
-                orderStatus: order.status,
+                status: order.status,
                 total: order.totalPayment,
                 products: productData,
+                paymentMethod: order.paymentMethod,
             }
         }))
 
@@ -143,9 +145,16 @@ export default function OrderTable(): JSX.Element {
             width: 100,
         },
         {
+            title: 'Payment Method',
+            dataIndex: 'paymentMethod',
+            key: 'paymentMethod',
+            render: (paymentMethod: string) => <p className={'text-uppercase'}>{paymentMethod}</p>,
+            width: 100,
+        },
+        {
             title: 'Order Status',
-            dataIndex: 'orderStatus',
-            key: 'orderStatus',
+            dataIndex: 'status',
+            key: 'status',
             render: (status: string) => {
                 switch (status) {
                     case ORDER_STATUS.PENDING:
@@ -311,6 +320,21 @@ export default function OrderTable(): JSX.Element {
                                 <Select.Option key={status.value} value={status.value}>{status.label}</Select.Option>
                             ))
                         }
+                    </Select>
+                    <Select
+                        placeholder={"Payment method"}
+                        style={{width: '150px'}}
+                        onChange={(value) => {
+                            setDataSearch({
+                                ...dataSearch,
+                                paymentMethod: value,
+                            })
+                        }}
+                        value={dataSearch.paymentMethod}
+                    >
+                        <Select.Option value={undefined}>All</Select.Option>
+                        <Select.Option value={'cod'}>COD</Select.Option>
+                        <Select.Option value={'vnpay'}>VNPAY</Select.Option>
                     </Select>
                     <Select
                         placeholder="Sort"

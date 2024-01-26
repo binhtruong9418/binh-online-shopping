@@ -1,7 +1,7 @@
 import {Button, Carousel, Image, Input, Pagination, Popconfirm, Select, Space, Table} from "antd";
 import {useState} from "react";
 import {useQuery} from "react-query";
-import DysonApi from "../../axios/DysonApi";
+import DysonApi from "../../axios/DysonApi.ts";
 import moment from "moment";
 import EditProductModal from "./EditProductModal";
 import AddProductModal from "./AddProductModal";
