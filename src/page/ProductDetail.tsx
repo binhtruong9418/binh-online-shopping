@@ -6,6 +6,7 @@ import {toast} from 'react-toastify';
 import {useCookies} from 'react-cookie';
 import DefaultLayout from "./layout/DefaultLayout";
 import {upperCaseFirstLetter} from "../utils";
+import {useTranslation} from "react-i18next";
 
 export default function () {
     const {id} = useParams();
@@ -15,7 +16,7 @@ export default function () {
     const queryClient = useQueryClient();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
-
+    const {t} = useTranslation()
     const {
         data: product,
         isSuccess
@@ -47,11 +48,11 @@ export default function () {
                 type: 'increase'
             })
             if (resp) {
-                toast.success('Add to cart successfully')
+                toast.success(t("Thêm vào giỏ hàng thành công"))
                 await queryClient.invalidateQueries('myCartQuantity')
             }
         } catch (error) {
-            toast.error('Add to cart failed')
+            toast.error(t("Thêm vào giỏ hàng thất bại"))
         } finally {
             setIsLoading(false)
         }
@@ -65,7 +66,7 @@ export default function () {
                         <div className="col-12">
                             <nav aria-label="breadcrumb">
                                 <ol className="breadcrumb mt-50">
-                                    <li className="breadcrumb-item"><a href="/">Home</a></li>
+                                    <li className="breadcrumb-item"><a href="/">{t("Trang chủ")}</a></li>
                                     <li className="breadcrumb-item">{product?.category}</li>
                                     <li className="breadcrumb-item active" aria-current="page">{(product.name)}</li>
                                 </ol>
@@ -143,14 +144,14 @@ export default function () {
                                             <i className="fa fa-star" aria-hidden="true"></i>
                                         </div>
                                     </div>
-                                    <p className="avaibility"><i className="fa fa-circle"></i> In Stock</p>
+                                    <p className="avaibility"><i className="fa fa-circle"></i> {t("Còn hàng")}</p>
                                 </div>
                                 <div className="short_overview my-5">
                                     <p>{product.description}</p>
                                 </div>
                                 <div className="cart clearfix">
                                     <div className="cart-btn d-flex mb-50">
-                                        <p>Qty</p>
+                                        <p>{t("Số lượng")}</p>
                                         <div className="quantity">
                                             <span className="qty-minus" onClick={() => handleUpdateQuantity('minus')}><i
                                                 className="fa fa-caret-down" aria-hidden="true"></i></span>
@@ -174,7 +175,8 @@ export default function () {
                                         className="btn amado-btn"
                                         onClick={handleAddToCart}
                                         disabled={isLoading}
-                                    >Add to cart
+                                    >
+                                        {isLoading ? t("Đang thêm...") : t("Thêm vào giỏ hàng")}
                                     </button>
                                 </div>
                             </div>

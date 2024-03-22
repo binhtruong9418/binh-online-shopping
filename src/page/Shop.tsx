@@ -1,29 +1,12 @@
 import {useQuery} from "react-query";
 import DysonApi from "../axios/DysonApi.ts";
 import ShopCard from "../compoments/ShopCard.tsx";
-import {useState} from "react";
+import {useMemo, useState} from "react";
 import {Pagination, Slider} from "antd";
 import DefaultLayout from "./layout/DefaultLayout.tsx";
+import {useTranslation} from "react-i18next";
 
 const TOTAL_PRODUCT_PER_PAGE = 10;
-const SORT_BY = [
-    {
-        value: '-createdAt',
-        label: 'Newest'
-    },
-    {
-        value: 'createdAt',
-        label: 'Oldest'
-    },
-    {
-        value: '-currentPrice',
-        label: 'Price: High to Low'
-    },
-    {
-        value: 'currentPrice',
-        label: 'Price: Low to High'
-    }
-]
 export default function () {
     const [dataSearch, setDataSearch] = useState<any>({
         page: 1,
@@ -33,9 +16,30 @@ export default function () {
         min: 0,
         max: 100,
     });
+    const {t} = useTranslation()
 
     const [priceRange, setPriceRange] = useState<any>([0, 100])
     const [isOpenFilterSort, setIsOpenFilterSort] = useState<boolean>(false);
+
+    const SORT_BY =
+        useMemo(() => [
+        {
+            value: '-createdAt',
+            label: t('Mới nhất')
+        },
+        {
+            value: 'createdAt',
+            label: t('Cũ nhất')
+        },
+        {
+            value: '-currentPrice',
+            label: t("Giá: Cao đến thấp")
+        },
+        {
+            value: 'currentPrice',
+            label: t("Giá: Thấp đến cao")
+        }
+    ], [t])
     const {
         data: listCategory = [],
         isSuccess: isSuccessCategory,
@@ -72,7 +76,9 @@ export default function () {
         <DefaultLayout>
             <div className="shop_sidebar_area">
                 <div className="widget catagory mb-50">
-                    <h6 className="widget-title mb-30">Catagories</h6>
+                    <h6 className="widget-title mb-30">
+                        {t("Danh mục")}
+                    </h6>
                     <div className="catagories-menu">
                         <ul>
                             {
@@ -90,7 +96,9 @@ export default function () {
                     </div>
                 </div>
                 <div className="widget price mb-50">
-                    <h6 className="widget-title mb-30">Price</h6>
+                    <h6 className="widget-title mb-30">
+                        {t("Giá")}
+                    </h6>
 
                     <div className="widget-desc">
                         <div className="slider-range">
@@ -128,9 +136,9 @@ export default function () {
                             <div className={"product-topbar d-xl-flex align-items-center justify-content-between"}>
                                 <div className={"total-products"}>
                                     <p>
-                                        Showing {" "}
+                                        {t("Hiển thị")} {" "}
                                         {dataSearch.page * dataSearch.limit - dataSearch.limit + 1} - {dataSearch.page * dataSearch.limit}
-                                        {" "}of {totalProduct} result
+                                        {" "} {t("trong")} {totalProduct} {t("sản phẩm")}
                                     </p>
                                 </div>
                                 <div className={"product-sorting d-flex"}>

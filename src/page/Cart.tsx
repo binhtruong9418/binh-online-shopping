@@ -6,11 +6,13 @@ import { Skeleton } from "antd";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import DefaultLayout from "./layout/DefaultLayout.tsx";
+import {useTranslation} from "react-i18next";
 
 export default function () {
     const [cookies] = useCookies(['cart']);
     const [listProduct, setListProduct] = useState<any[]>([])
     const queryClient = useQueryClient();
+    const {t} = useTranslation()
     const {
         data: { totalAmount } = {},
         isLoading,
@@ -44,7 +46,7 @@ export default function () {
             await refetch()
             await queryClient.invalidateQueries('myCartQuantity')
         } catch (error: any) {
-            toast.error(error.message)
+            toast.error(t("Lỗi cập nhật giỏ hàng"))
         }
     }
     return (
@@ -54,7 +56,7 @@ export default function () {
                     <div className="row">
                         <div className="col-12 col-lg-8">
                             <div className="cart-title mt-50">
-                                <h2>Shopping Cart</h2>
+                                <h2>{t("Giỏ hàng")}</h2>
                             </div>
 
                             <div className="cart-table clearfix">
@@ -62,9 +64,9 @@ export default function () {
                                     <thead>
                                         <tr>
                                             <th></th>
-                                            <th>Name</th>
-                                            <th>Price</th>
-                                            <th>Quantity</th>
+                                            <th>{t("Tên")}</th>
+                                            <th>{t("Giá tiền")}</th>
+                                            <th>{t("Số lượng")}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -93,12 +95,14 @@ export default function () {
                             <div className="cart-summary">
                                 <h5>Cart Total</h5>
                                 <ul className="summary-table">
-                                    <li><span>subtotal:</span> <span>${totalAmount?.toFixed(2)}</span></li>
-                                    <li><span>delivery:</span> <span>Free</span></li>
-                                    <li><span>total:</span> <span>${totalAmount?.toFixed(2)}</span></li>
+                                    <li><span>{t("Số tiền đơn hàng")}:</span> <span>${totalAmount?.toFixed(2)}</span></li>
+                                    <li><span>{t("Chi phí vận chuyển")}:</span> <span>0</span></li>
+                                    <li><span>{t("Tổng cộng")}:</span> <span>${totalAmount?.toFixed(2)}</span></li>
                                 </ul>
                                 <div className="cart-btn mt-100">
-                                    <a href="/checkout" className="btn amado-btn w-100">Checkout</a>
+                                    <a href="/checkout" className="btn amado-btn w-100">
+                                        {t("Thanh toán")}
+                                    </a>
                                 </div>
                             </div>
                         </div>

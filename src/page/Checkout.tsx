@@ -6,6 +6,7 @@ import DysonApi from '../axios/DysonApi.ts'
 import { useCookies } from 'react-cookie'
 import { useNavigate } from 'react-router-dom'
 import DefaultLayout from './layout/DefaultLayout'
+import {useTranslation} from "react-i18next";
 const Checkout = () => {
     const navigate = useNavigate()
     const [cookies] = useCookies(['cart']);
@@ -26,6 +27,7 @@ const Checkout = () => {
     const listProvince = JSON.parse(JSON.stringify(AddressJson))
 
     const [isCod, setIsCod] = useState<boolean>(false)
+    const {t} = useTranslation()
 
 
     const {
@@ -65,12 +67,12 @@ const Checkout = () => {
     }
     const handleSubmit = async () => {
         if (!name || !phone || !address || !province || !district || !ward) {
-            toast.error('Please fill all field', { position: 'top-left' })
+            toast.error(t("Vui lòng điền đầy đủ thông tin"), { position: 'top-left' })
             return;
         }
 
         if (totalAmount === 0) {
-            toast.error('Cart is empty', { position: 'top-left' })
+            toast.error(t("Giỏ hàng trống"), { position: 'top-left' })
             return;
         }
 
@@ -107,7 +109,7 @@ const Checkout = () => {
                         <div className="col-12 col-lg-8">
                             <div className="checkout_details_area mt-50 clearfix">
                                 <div className="cart-title">
-                                    <h2>Checkout</h2>
+                                    <h2>{""}</h2>
                                 </div>
 
                                 <form>
@@ -118,7 +120,7 @@ const Checkout = () => {
                                                 type="text"
                                                 className="form-control"
                                                 value={name}
-                                                placeholder="Full Name"
+                                                placeholder={t("Tên đầy đủ")}
                                                 onChange={(e) => setName(e.target.value)}
                                                 required />
                                         </div>
@@ -128,7 +130,7 @@ const Checkout = () => {
                                                 type="tel"
                                                 className="form-control"
                                                 value={phone}
-                                                placeholder="Phone Number"
+                                                placeholder={t("Số điện thoại")}
                                                 onChange={(e) => setPhone(e.target.value)}
                                                 required
                                             />
@@ -140,7 +142,7 @@ const Checkout = () => {
                                                 type="email"
                                                 className="form-control"
                                                 value={email}
-                                                placeholder="Email (Optional)"
+                                                placeholder={`Email (${t("không bắt buộc")})`}
                                                 onChange={(e) => setEmail(e.target.value)}
                                             />
                                         </div>
@@ -150,7 +152,7 @@ const Checkout = () => {
                                                 "nice-select w-100"}
                                                 onClick={() => setIsOpenProvinceDropdown(!isOpenProvinceDropdown)}
                                             >
-                                                <span className="current pl-2">{province ? province : "Province"}</span>
+                                                <span className="current pl-2">{province ? province : t("Tỉnh, thành phố")}</span>
                                                 <ul className="list">
                                                     {
                                                         listProvince.map((item: any) => (
@@ -166,7 +168,7 @@ const Checkout = () => {
                                                 "nice-select w-100"}
                                                 onClick={() => setIsOpenDistrictDropdown(!isOpenDistrictDropdown && listDistrict.length > 0)}
                                             >
-                                                <span className="current pl-2">{district ? district : "District"}</span>
+                                                <span className="current pl-2">{district ? district : t("Quận, huyện")}</span>
                                                 <ul className="list">
                                                     {
                                                         listDistrict.map((item: any) => (
@@ -182,7 +184,7 @@ const Checkout = () => {
                                                 "nice-select w-100"}
                                                 onClick={() => setIsOpenWardDropdown(!isOpenWardDropdown && listWard.length > 0 && listDistrict.length > 0)}
                                             >
-                                                <span className="current pl-2">{ward ? ward : "Ward"}</span>
+                                                <span className="current pl-2">{ward ? ward : t("Xã, phường")}</span>
                                                 <ul className="list">
                                                     {
                                                         listWard.map((item: any) => (
@@ -197,7 +199,7 @@ const Checkout = () => {
                                                 name='address'
                                                 type="text"
                                                 className="form-control mb-3"
-                                                placeholder="Address"
+                                                placeholder={t("Địa chỉ cụ thể")}
                                                 value={address}
                                                 onChange={(e) => setAddress(e.target.value)}
                                             />
@@ -209,7 +211,7 @@ const Checkout = () => {
                                                 value={note}
                                                 onChange={(e) => setNote(e.target.value)}
                                                 cols={30} rows={10}
-                                                placeholder="Leave a note about your order"
+                                                placeholder={t("Vui lòng điền ghi chú")}
                                             />
                                         </div>
                                     </div>
@@ -220,9 +222,10 @@ const Checkout = () => {
                             <div className="cart-summary">
                                 <h5>Cart Total</h5>
                                 <ul className="summary-table">
-                                    <li><span>subtotal:</span> <span>${totalAmount?.toFixed(2)}</span></li>
-                                    <li><span>delivery:</span> <span>---</span></li>
-                                    <li><span>total:</span> <span>${totalAmount?.toFixed(2)}</span></li>
+                                    <li><span>{t("Số tiền đơn hàng")}:</span> <span>${totalAmount?.toFixed(2)}</span>
+                                    </li>
+                                    <li><span>{t("Chi phí vận chuyển")}:</span> <span>0</span></li>
+                                    <li><span>{t("Tổng cộng")}:</span> <span>${totalAmount?.toFixed(2)}</span></li>
                                 </ul>
 
 
@@ -235,12 +238,16 @@ const Checkout = () => {
                                             className="custom-control-input"
                                             checked={isCod}
                                         />
-                                        <label className="custom-control-label">Cash on delivery (COD)</label>
+                                        <label className="custom-control-label">
+                                            {t("Thanh toán khi nhận hàng")}
+                                        </label>
                                     </div>
                                 </div>
 
                                 <div className="cart-btn mt-100">
-                                    <button onClick={handleSubmit} className="btn amado-btn w-100">Order</button>
+                                    <button onClick={handleSubmit} className="btn amado-btn w-100">
+                                        {t("Thanh toán")}
+                                    </button>
                                 </div>
                             </div>
                         </div>

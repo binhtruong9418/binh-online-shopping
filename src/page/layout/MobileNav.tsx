@@ -1,4 +1,4 @@
-import Logo from '../../assets/img/logo.png';
+import Logo from '../../assets/img/logo.jpeg';
 import PropTypes, {InferProps} from "prop-types";
 export default function MobileNav ({handleShowMenu}: InferProps<typeof MobileNav.propTypes>) {
     return (

@@ -4,10 +4,12 @@ import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import DysonApi from "../axios/DysonApi.ts";
 import {toast} from "react-toastify";
+import {useTranslation} from "react-i18next";
 
 const TrackingOrder = () => {
     const navigate = useNavigate()
     const [orderId, setOrderId] = useState<string>('')
+    const {t} = useTranslation()
 
     const handleTracking = async () => {
         try {
@@ -17,20 +19,20 @@ const TrackingOrder = () => {
             }
         } catch (error: any) {
             console.log(error.message)
-            toast.error("Order not found")
+            toast.error(t("Không tìm thấy đơn hàng"))
         }
     }
     return (
         <DefaultLayout>
             <div className={'d-flex flex-column align-items-center mx-auto mt-5'}>
                 <Typography.Title level={2}>
-                    Tracking Order
+                    {t("Kiểm tra đơn hàng")}
                 </Typography.Title>
                 <Typography.Paragraph>
-                    Please input your order id here
+                    {t("Nhập mã đơn hàng của bạn để kiểm tra trạng thái đơn hàng")}
                 </Typography.Paragraph>
                 <Input
-                    placeholder={"Order id"}
+                    placeholder={(t("Mã đơn hàng"))}
                     style={{width: 300, marginTop: 20, marginBottom: 20}}
                     value={orderId}
                     onChange={(e) => setOrderId(e.target.value)}
@@ -47,7 +49,8 @@ const TrackingOrder = () => {
                         width: 200
                     }}
                     onClick={handleTracking}
-                >Tracking
+                >
+                    {t("Kiểm tra")}
                 </button>
             </div>
         </DefaultLayout>

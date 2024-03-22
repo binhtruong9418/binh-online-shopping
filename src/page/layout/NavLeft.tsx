@@ -1,4 +1,4 @@
-import Logo from '../../assets/img/logo.png';
+import Logo from '../../assets/img/logo.jpeg';
 import Card from '../../assets/img/cart.png';
 import MobileNav from "./MobileNav.tsx";
 import {useState} from "react";
@@ -6,6 +6,7 @@ import {Link, useLocation} from "react-router-dom";
 import {useQuery} from 'react-query';
 import DysonApi from '../../axios/DysonApi.ts';
 import {useCookies} from 'react-cookie';
+import {useTranslation} from "react-i18next";
 
 export default function () {
     const [showHeaderMobile, setShowHeaderMobile] = useState(false);
@@ -14,6 +15,7 @@ export default function () {
     const [cookies] = useCookies(['cart']);
     const userInfo = localStorage.getItem('userInfo');
     const jwtToken = localStorage.getItem('jwtToken');
+    const {t} = useTranslation();
 
     const handleChangeShowHeader = () => {
         setShowHeaderMobile(!showHeaderMobile);
@@ -41,9 +43,11 @@ export default function () {
                 </div>
                 <nav className="amado-nav">
                     <ul>
-                        <li className={pathname === '/' ? 'active' : ''}><Link to={'/'}>Home</Link></li>
-                        <li className={pathname === '/shop' ? 'active' : ''}><Link to={'/shop'}>Shop</Link></li>
-                        <li className={pathname === '/tracking-order' ? 'active' : ''}><Link to={'/tracking-order'}>Tracking Order</Link></li>
+                        <li className={pathname === '/' ? 'active' : ''}><Link to={'/'}>{t("Trang chủ")}</Link></li>
+                        <li className={pathname === '/shop' ? 'active' : ''}><Link to={'/shop'}>{t("Sản phẩm")}</Link></li>
+                        <li className={pathname === '/tracking-order' ? 'active' : ''}><Link to={'/tracking-order'}>
+                            {t("Kiểm tra đơn hàng")}
+                        </Link></li>
                         {
                             userInfo && jwtToken && (
                                 <li><Link to={'/admin'}>Admin</Link></li>
@@ -53,7 +57,7 @@ export default function () {
                 </nav>
                 <div className="cart-fav-search mb-100">
                     <Link to={'/cart'} className="cart-nav"><img src={Card}
-                                                                 alt=""/> Cart <span>{`(${totalQuantity})`}</span></Link>
+                                                                 alt=""/> {t("Giỏ hàng")} <span>{`(${totalQuantity})`}</span></Link>
                 </div>
                 <div className="social-info d-flex justify-content-between">
                     <a href="https://github.com/binhtruong9418" target={"_blank"}>

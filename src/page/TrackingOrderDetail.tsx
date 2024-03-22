@@ -8,10 +8,12 @@ import moment from "moment";
 import {MdOutlineLocalShipping} from "react-icons/md";
 import {FiBox} from "react-icons/fi";
 import {upperCaseFirstLetter} from "../utils";
+import {useTranslation} from "react-i18next";
 
 export default function TrackingOrderDetail() {
     const {id: orderId} = useParams();
     const navigate = useNavigate();
+    const {t} = useTranslation();
     const {
         data: orderDetail = {},
         isLoading,
@@ -46,14 +48,14 @@ export default function TrackingOrderDetail() {
                 <div className="container-fluid">
                     <div className="row mb-5">
                         <div className="col-12 text-left mt-3 mt-sm-0">
-                            <Typography.Title level={3} style={{marginBottom: '0px'}}>Order id:</Typography.Title>
+                            <Typography.Title level={3} style={{marginBottom: '0px'}}>{t("Mã đơn hàng")}:</Typography.Title>
                             <Typography.Title level={3}>{orderId}</Typography.Title>
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-12 col-lg-6">
                             <Typography.Title level={4} className={'mb-5'}>
-                                Order status
+                                {t("Trạng thái đơn hàng")}
                             </Typography.Title>
                             <Timeline
                                 mode="right"
@@ -62,7 +64,7 @@ export default function TrackingOrderDetail() {
                                 }}
                                 items={[
                                     {
-                                        label: 'Order created',
+                                        label: t('Đơn hàng đã được tạo'),
                                         color: 'red',
                                         dot: <ClockCircleOutlined style={{fontSize: '16px'}}/>,
                                         children: (
@@ -70,13 +72,13 @@ export default function TrackingOrderDetail() {
                                                 <div
                                                     className={'font-bold'}>{moment(orderDetail?.createdAt).format('YYYY-MM-DD HH:mm:ss')}</div>
                                                 <div>
-                                                    Order has been created. Please wait for the order to be confirmed. Please call hotline 0972 230 803 (during office hours) if you want to change order information before your order is TRANSMITTED TO DELIVERY.
+                                                    {t("Đơn hàng đã được tạo. Vui lòng chờ đơn hàng được xác nhận. Vui lòng gọi đường dây nóng 0972 230 803 (trong giờ hành chính) nếu bạn muốn thay đổi thông tin đơn hàng trước khi đơn hàng của bạn được chuyển đến TRẠNG THÁI GIAO HÀNG.")}
                                                 </div>
                                             </div>
                                         )
                                     },
                                     {
-                                        label: 'Order confirmed',
+                                        label: t("Đơn hàng đã được xác nhận"),
                                         color: 'blue',
                                         dot: <FiBox style={{fontSize: '17px'}}/>,
                                         children: orderDetail?.confirmTime ? (
@@ -84,8 +86,7 @@ export default function TrackingOrderDetail() {
                                                 <div
                                                     className={'font-bold'}>{moment(orderDetail?.confirmTime).format('YYYY-MM-DD HH:mm:ss')}</div>
                                                 <div>
-                                                    Your order has been confirmed. Please wait for the product to be
-                                                    delivered.
+                                                    {t("Đơn hàng của bạn đã được xác nhận. Vui lòng chờ sản phẩm được giao đến.")}
                                                 </div>
                                             </div>
                                         ) : (
@@ -93,7 +94,7 @@ export default function TrackingOrderDetail() {
                                         )
                                     },
                                     {
-                                        label: 'Order delivering',
+                                        label: t('Đơn hàng đang được giao'),
                                         color: 'blue',
                                         dot: <MdOutlineLocalShipping style={{fontSize: '16px'}}/>,
                                         children: orderDetail?.deliveryTime ? (
@@ -101,8 +102,7 @@ export default function TrackingOrderDetail() {
                                                 <div
                                                     className={'font-bold'}>{moment(orderDetail?.deliveryTime).format('YYYY-MM-DD HH:mm:ss')}</div>
                                                 <div>
-                                                    Your order is being delivered. Please wait for the product to be
-                                                    delivered.
+                                                    {t("Đơn hàng của bạn đang được giao. Vui lòng chờ sản phẩm được giao đến.")}
                                                 </div>
                                             </div>
                                         ) : (
@@ -110,7 +110,7 @@ export default function TrackingOrderDetail() {
                                         )
                                     },
                                     {
-                                        label: 'Order delivered',
+                                        label: t('Đơn hàng đã được giao'),
                                         color: 'green',
                                         dot: <CheckCircleOutlined style={{fontSize: '16px'}}/>,
                                         children: orderDetail?.successTime ? (
@@ -118,7 +118,7 @@ export default function TrackingOrderDetail() {
                                                 <div
                                                     className={'font-bold'}>{moment(orderDetail?.successTime).format('YYYY-MM-DD HH:mm:ss')}</div>
                                                 <div>
-                                                    Your order has been delivered. Thank you for using our service.
+                                                    {t("Đơn hàng của bạn đã được giao. Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi.")}
                                                 </div>
                                             </div>
                                         ) : (
@@ -132,30 +132,32 @@ export default function TrackingOrderDetail() {
                         <div className="col-12 col-lg-6">
                             <Descriptions title={
                                 <Typography.Title level={4}>
-                                    Order information
+                                    {t("Thông tin giao hàng")}
                                 </Typography.Title>
                             } layout="vertical" bordered>
                                 <Descriptions.Item
-                                    label="Customer name">{orderDetail?.shippingDetail?.name}</Descriptions.Item>
+                                    label={t("Tên khách hàng")}>{orderDetail?.shippingDetail?.name}</Descriptions.Item>
                                 <Descriptions.Item
-                                    label="Customer phone">{orderDetail?.shippingDetail?.phone}</Descriptions.Item>
+                                    label={t("Số điện thoại")}>{orderDetail?.shippingDetail?.phone}</Descriptions.Item>
                                 <Descriptions.Item
-                                    label="Customer email">{orderDetail?.shippingDetail?.email}</Descriptions.Item>
+                                    label={t("Email")}>{orderDetail?.shippingDetail?.email}</Descriptions.Item>
                                 <Descriptions.Item
-                                    label="Customer address">{orderDetail?.shippingDetail?.address}</Descriptions.Item>
+                                    label={t("Địa chỉ chi tiết")}>{orderDetail?.shippingDetail?.address}</Descriptions.Item>
                                 <Descriptions.Item
-                                    label={"Customer ward"}>{orderDetail?.shippingDetail?.ward}</Descriptions.Item>
+                                    label={t("Phường, xã")}>{orderDetail?.shippingDetail?.ward}</Descriptions.Item>
                                 <Descriptions.Item
-                                    label={"Customer district"}>{orderDetail?.shippingDetail?.district}</Descriptions.Item>
+                                    label={t("Quận, huyện")}>{orderDetail?.shippingDetail?.district}</Descriptions.Item>
                                 <Descriptions.Item
-                                    label={"Customer province"}>{orderDetail?.shippingDetail?.province}</Descriptions.Item>
+                                    label={t("Tỉnh, thành phố")}>{orderDetail?.shippingDetail?.province}</Descriptions.Item>
 
                             </Descriptions>
                         </div>
                     </div>
                     <div className={'row mt-5'}>
                         <div className={'col-12 col-lg-6 border p-3'}>
-                            <Typography.Title level={4}>List Product</Typography.Title>
+                            <Typography.Title level={4}>
+                                {t("Chi tiết đơn hàng")}
+                            </Typography.Title>
                             <div style={{
                                 height: '4px',
                                 width: '100%',
@@ -175,8 +177,8 @@ export default function TrackingOrderDetail() {
                                                 <img src={e?.images[0]} width={120}/>
                                                 <div>
                                                     <div className={'ml-3'}>{upperCaseFirstLetter(e?.name)}</div>
-                                                    <div className={'ml-3'}>Price: ${e?.currentPrice}</div>
-                                                    <div className={'ml-3'}>Quantity: {e?.quantity}</div>
+                                                    <div className={'ml-3'}>{t("Giá")}: ${e?.currentPrice}</div>
+                                                    <div className={'ml-3'}>{t("Số lượng")}: {e?.quantity}</div>
                                                     <div className={'ml-3 mt-5'}>${e.quantity * e?.currentPrice}</div>
                                                 </div>
                                             </div>
@@ -186,7 +188,9 @@ export default function TrackingOrderDetail() {
                             }
                         </div>
                         <div className={'col-12 col-lg-6 border p-3'}>
-                            <Typography.Title level={4}>Checkout</Typography.Title>
+                            <Typography.Title level={4}>
+                                {t("Tổng thanh toán")}
+                            </Typography.Title>
                             <div style={{
                                 height: '4px',
                                 width: '100%',
@@ -195,25 +199,21 @@ export default function TrackingOrderDetail() {
                             }}/>
                             <div>
                                 <div className={'d-flex justify-content-between align-items-center mb-1'}>
-                                    <div>Order value:</div>
+                                    <div>{t("Số tiền đơn hàng")}: </div>
                                     <div>${totalNotDiscount}</div>
                                 </div>
                                 <div className={'d-flex justify-content-between align-items-center mb-1'}>
-                                    <div>Total discount:</div>
+                                    <div>{t("Khuyến mãi")}:</div>
                                     <div>- ${totalDiscount}</div>
                                 </div>
                                 <div className={'d-flex justify-content-between align-items-center mb-1'}>
-                                    <div>Delivery charges :</div>
-                                    <div>${0}</div>
-                                </div>
-                                <div className={'d-flex justify-content-between align-items-center'}>
-                                    <div>Payment fee:</div>
+                                    <div>{t("Chi phí vận chuyển")}: </div>
                                     <div>${0}</div>
                                 </div>
                             </div>
                             <Divider />
                             <div className={'d-flex justify-content-between align-items-center'}>
-                                <div>Total payment:</div>
+                                <div>{t("Tổng cộng")}:</div>
                                 <div>${totalNotDiscount - totalDiscount}</div>
                             </div>
 
@@ -232,7 +232,7 @@ export default function TrackingOrderDetail() {
                                     navigate('/')
                                 }}
                             >
-                                Back to home
+                                {t("Quay lại trang chủ")}
                             </button>
                         </div>
                     </div>
