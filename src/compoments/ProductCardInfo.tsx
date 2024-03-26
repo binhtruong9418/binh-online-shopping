@@ -15,7 +15,7 @@ export default function ProductCardInfo({ id, name, price, image, quantity, hand
                 <h5>{name}</h5>
             </td>
             <td className="price">
-                <span>${price.toFixed(2)}</span>
+                <span>{price.toLocaleString('vi-VN')}₫</span>
             </td>
             <td className="qty">
                 <div className="qty-btn d-flex">

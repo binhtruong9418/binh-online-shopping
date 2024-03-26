@@ -14,7 +14,7 @@ export default function ShopCard({ id, images, name, currentPrice }: InferProps<
                 <div className="product-description d-flex align-items-center justify-content-between">
                     <div className="product-meta-data">
                         <div className="line"></div>
-                        <p className="product-price">${currentPrice.toFixed(2)}</p>
+                        <p className="product-price">{currentPrice.toLocaleString('vi-VN')}₫</p>
                         <a href="#">
                             <h6>{upperCaseFirstLetter(name)}</h6>
                         </a>

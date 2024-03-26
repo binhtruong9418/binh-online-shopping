@@ -177,9 +177,9 @@ export default function TrackingOrderDetail() {
                                                 <img src={e?.images[0]} width={120}/>
                                                 <div>
                                                     <div className={'ml-3'}>{upperCaseFirstLetter(e?.name)}</div>
-                                                    <div className={'ml-3'}>{t("Giá")}: ${e?.currentPrice}</div>
+                                                    <div className={'ml-3'}>{t("Giá")}: {e?.currentPrice.toLocaleString('vi-VN')}₫</div>
                                                     <div className={'ml-3'}>{t("Số lượng")}: {e?.quantity}</div>
-                                                    <div className={'ml-3 mt-5'}>${e.quantity * e?.currentPrice}</div>
+                                                    <div className={'ml-3 mt-5'}>{(e.quantity * e?.currentPrice).toLocaleString('vi-VN')}₫</div>
                                                 </div>
                                             </div>
                                         </>
@@ -200,21 +200,21 @@ export default function TrackingOrderDetail() {
                             <div>
                                 <div className={'d-flex justify-content-between align-items-center mb-1'}>
                                     <div>{t("Số tiền đơn hàng")}: </div>
-                                    <div>${totalNotDiscount}</div>
+                                    <div>{totalNotDiscount?.toLocaleString('vi-VN')}₫</div>
                                 </div>
                                 <div className={'d-flex justify-content-between align-items-center mb-1'}>
                                     <div>{t("Khuyến mãi")}:</div>
-                                    <div>- ${totalDiscount}</div>
+                                    <div>- {totalDiscount?.toLocaleString('vi-VN')}₫</div>
                                 </div>
                                 <div className={'d-flex justify-content-between align-items-center mb-1'}>
                                     <div>{t("Chi phí vận chuyển")}: </div>
-                                    <div>${0}</div>
+                                    <div>{0?.toLocaleString('vi-VN')}₫</div>
                                 </div>
                             </div>
                             <Divider />
                             <div className={'d-flex justify-content-between align-items-center'}>
                                 <div>{t("Tổng cộng")}:</div>
-                                <div>${totalNotDiscount - totalDiscount}</div>
+                                <div>{(totalNotDiscount - totalDiscount)?.toLocaleString('vi-VN')}₫</div>
                             </div>
 
                             <button

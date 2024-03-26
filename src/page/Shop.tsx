@@ -14,11 +14,11 @@ export default function () {
         sort: '-createdAt',
         category: '',
         min: 0,
-        max: 100,
+        max: 2000000,
     });
     const {t} = useTranslation()
 
-    const [priceRange, setPriceRange] = useState<any>([0, 100])
+    const [priceRange, setPriceRange] = useState<any>([0, 2000000])
     const [isOpenFilterSort, setIsOpenFilterSort] = useState<boolean>(false);
 
     const SORT_BY =
@@ -108,6 +108,8 @@ export default function () {
                                 onChange={(value) => {
                                     setPriceRange(value)
                                 }}
+                                min={0}
+                                max={2000000}
                                 styles={{
                                     track: {
                                         backgroundColor: '#fbb710',
@@ -124,7 +126,11 @@ export default function () {
                                     })
                                 }}
                             />
-                            <div className="range-price">${dataSearch.min} - ${dataSearch.max}</div>
+                            <div className="range-price">
+                                {dataSearch.min.toLocaleString('vi-VN')}₫
+                                - {" "}
+                                {dataSearch.max.toLocaleString('vi-VN')}₫
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -145,7 +151,7 @@ export default function () {
                                     <div className={"sort-by-date d-flex align-items-center mr-15"} onClick={() => {
                                         setIsOpenFilterSort(!isOpenFilterSort)
                                     }}>
-                                        <p>Sort by</p>
+                                        <p>{t("Lọc theo")}</p>
                                         <div className={isOpenFilterSort ? "nice-select open" : "nice-select"}>
                                             <span className={"current ml-1"}>
                                                 {SORT_BY.find((item: any) => item.value === dataSearch.sort)?.label ?? SORT_BY[0].label}

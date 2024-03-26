@@ -95,9 +95,9 @@ export default function () {
                             <div className="cart-summary">
                                 <h5>Cart Total</h5>
                                 <ul className="summary-table">
-                                    <li><span>{t("Số tiền đơn hàng")}:</span> <span>${totalAmount?.toFixed(2)}</span></li>
-                                    <li><span>{t("Chi phí vận chuyển")}:</span> <span>0</span></li>
-                                    <li><span>{t("Tổng cộng")}:</span> <span>${totalAmount?.toFixed(2)}</span></li>
+                                    <li><span>{t("Số tiền đơn hàng")}:</span> <span>{totalAmount?.toLocaleString('vi-VN')}₫</span></li>
+                                    <li><span>{t("Chi phí vận chuyển")}:</span> <span>0₫</span></li>
+                                    <li><span>{t("Tổng cộng")}:</span> <span>{totalAmount?.toLocaleString('vi-VN')}₫</span></li>
                                 </ul>
                                 <div className="cart-btn mt-100">
                                     <a href="/checkout" className="btn amado-btn w-100">

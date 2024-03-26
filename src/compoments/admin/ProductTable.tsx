@@ -112,7 +112,7 @@ export default function ProductTable(): JSX.Element {
             title: 'Price',
             dataIndex: 'productPrice',
             key: 'productPrice',
-            render: (productPrice: number) => <p>{productPrice}$</p>,
+            render: (productPrice: number) => <p>{productPrice?.toLocaleString('vi-VN')}₫</p>,
             width: 100
         },
         {

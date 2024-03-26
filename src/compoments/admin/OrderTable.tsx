@@ -33,7 +33,7 @@ const expandableProduct = (products: any) => {
             title: 'Price',
             dataIndex: 'productPrice',
             key: 'productPrice',
-            render: (productPrice: number) => <p>{productPrice}</p>,
+            render: (productPrice: number) => <p>{productPrice?.toLocaleString('vi-VN')}₫</p>,
         },
     ]
 
@@ -184,7 +184,7 @@ export default function OrderTable(): JSX.Element {
             title: 'Total',
             dataIndex: 'total',
             key: 'total',
-            render: (total: number) => <p>{total}$</p>,
+            render: (total: number) => <p>{total.toLocaleString('vi-VN')}₫</p>,
             width: 100,
         },
         {

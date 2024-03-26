@@ -246,7 +246,7 @@ const EditProductModal = ({ isVisible,
                     >
                         <InputNumber
                             placeholder="Price"
-                            addonAfter='$'
+                            addonAfter='₫'
                             className="w-100"
                             size="large"
                         />

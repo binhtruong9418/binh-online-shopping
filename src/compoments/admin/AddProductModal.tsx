@@ -214,7 +214,7 @@ const AddProductModal = ({
                     >
                         <InputNumber
                             placeholder="Price"
-                            addonAfter='$'
+                            addonAfter='₫'
                             className="w-100"
                             size="large"
                             min={0}

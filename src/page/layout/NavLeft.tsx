@@ -44,7 +44,8 @@ export default function () {
                 <nav className="amado-nav">
                     <ul>
                         <li className={pathname === '/' ? 'active' : ''}><Link to={'/'}>{t("Trang chủ")}</Link></li>
-                        <li className={pathname === '/shop' ? 'active' : ''}><Link to={'/shop'}>{t("Sản phẩm")}</Link></li>
+                        <li className={pathname === '/shop' ? 'active' : ''}><Link to={'/shop'}>{t("Sản phẩm")}</Link>
+                        </li>
                         <li className={pathname === '/tracking-order' ? 'active' : ''}><Link to={'/tracking-order'}>
                             {t("Kiểm tra đơn hàng")}
                         </Link></li>
@@ -56,21 +57,26 @@ export default function () {
                     </ul>
                 </nav>
                 <div className="cart-fav-search mb-100">
-                    <Link to={'/cart'} className="cart-nav"><img src={Card}
-                                                                 alt=""/> {t("Giỏ hàng")} <span>{`(${totalQuantity})`}</span></Link>
+                    <Link to={'/cart'} className="cart-nav">
+                        <img src={Card} alt=""/>
+                        {t("Giỏ hàng")}
+                        <span>
+                            {` (${totalQuantity})`}
+                        </span>
+                    </Link>
                 </div>
                 <div className="social-info d-flex justify-content-between">
-                    <a href="https://github.com/binhtruong9418" target={"_blank"}>
-                        <i className="fa fa-github" aria-hidden="true"></i>
+                    <a href="tel:0386671690" target={"_blank"}>
+                        <i className="fa fa-phone" aria-hidden="true"></i>
                     </a>
-                    <a href="https://www.linkedin.com/in/binh-duc-731682170/" target={"_blank"}>
-                        <i className="fa fa-linkedin" aria-hidden="true"></i>
+                    <a href="https://www.instagram.com/elysium.candles__/" target={"_blank"}>
+                        <i className="fa fa-instagram" aria-hidden="true"></i>
                     </a>
-                    <a href="https://facebook.com/ducbinh9418" target={"_blank"}>
+                    <a href="https://www.facebook.com/profile.php?id=61557619921037" target={"_blank"}>
                         <i className="fa fa-facebook" aria-hidden="true"></i>
                     </a>
-                    <a href="https://twitter.com/DucBinh9418" target={"_blank"}>
-                        <i className="fa fa-twitter" aria-hidden="true"></i>
+                    <a href="mailto:elysium.infor@gmail.com" target={"_blank"}>
+                        <i className="fa fa-envelope" aria-hidden="true"></i>
                     </a>
                 </div>
             </header>

@@ -119,13 +119,14 @@ export default function () {
                                     <div className={'d-flex align-items-end'}>
                                         <div>
                                             <div className="line"></div>
-                                            <p className="product-price">${product.currentPrice.toFixed(2)}</p>
+                                            <p className="product-price">{product.currentPrice.toLocaleString('vi-VN')}₫</p>
                                         </div>
                                         {
                                             product.discount > 0 && (
                                                 <>
                                                     <p className={'mb-1'}
-                                                       style={{textDecoration: 'line-through'}}>${product?.price.toFixed(2)}</p>
+                                                       style={{textDecoration: 'line-through'}}>{product?.price.toLocaleString(
+                                                        'vi-VN')}₫</p>
                                                     <p className={'ml-2 text-danger mb-1'}>-{product?.discount}%</p>
                                                 </>
                                             )
