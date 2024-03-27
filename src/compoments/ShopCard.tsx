@@ -28,7 +28,7 @@ export default function ShopCard({ id, images, name, currentPrice }: InferProps<
                             <i className="fa fa-star" aria-hidden="true"></i>
                         </div>
                         <div className="cart">
-                            <a href="#" data-toggle="tooltip" data-placement="left" title="Add to Cart">
+                            <a href="#" data-toggle="tooltip" data-placement="left" title="Thêm vào giỏ hàng">
                                 <img src={CardImg} alt="" />
                             </a>
                         </div>

@@ -19,7 +19,6 @@ export default function ProductCardInfo({ id, name, price, image, quantity, hand
             </td>
             <td className="qty">
                 <div className="qty-btn d-flex">
-                    <p>Qty</p>
                     <div className="quantity">
                         <span className="qty-minus" onClick={() => handleChangeQuantity(id, 1, 'decrease').then()}><i className="fa fa-minus" aria-hidden="true"></i></span>
                         <input

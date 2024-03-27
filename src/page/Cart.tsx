@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import DefaultLayout from "./layout/DefaultLayout.tsx";
 import {useTranslation} from "react-i18next";
+import {Link} from "react-router-dom";
 
 export default function () {
     const [cookies] = useCookies(['cart']);
@@ -93,16 +94,16 @@ export default function () {
                         </div>
                         <div className="col-12 col-lg-4">
                             <div className="cart-summary">
-                                <h5>Cart Total</h5>
+                                <h5>{t("Tổng thanh toán")}</h5>
                                 <ul className="summary-table">
                                     <li><span>{t("Số tiền đơn hàng")}:</span> <span>{totalAmount?.toLocaleString('vi-VN')}₫</span></li>
                                     <li><span>{t("Chi phí vận chuyển")}:</span> <span>0₫</span></li>
                                     <li><span>{t("Tổng cộng")}:</span> <span>{totalAmount?.toLocaleString('vi-VN')}₫</span></li>
                                 </ul>
                                 <div className="cart-btn mt-100">
-                                    <a href="/checkout" className="btn amado-btn w-100">
+                                    <Link to="/checkout" className="btn amado-btn w-100">
                                         {t("Thanh toán")}
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
                         </div>

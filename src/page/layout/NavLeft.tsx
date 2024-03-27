@@ -39,7 +39,7 @@ export default function () {
                     <i className="fa fa-close" aria-hidden="true"></i>
                 </div>
                 <div className="logo">
-                    <a href="#"><img src={Logo} alt=""/></a>
+                    <Link to="/"><img src={Logo} alt=""/></Link>
                 </div>
                 <nav className="amado-nav">
                     <ul>
