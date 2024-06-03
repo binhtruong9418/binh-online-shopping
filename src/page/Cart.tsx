@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import DefaultLayout from "./layout/DefaultLayout.tsx";
 import {useTranslation} from "react-i18next";
+import {Link} from "react-router-dom";
 
 export default function () {
     const [cookies] = useCookies(['cart']);
@@ -100,9 +101,9 @@ export default function () {
                                     <li><span>{t("Tổng cộng")}:</span> <span>{totalAmount?.toLocaleString('vi-VN')}₫</span></li>
                                 </ul>
                                 <div className="cart-btn mt-100">
-                                    <a href="/checkout" className="btn amado-btn w-100">
+                                    <Link to="/checkout" className="btn amado-btn w-100">
                                         {t("Thanh toán")}
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
                         </div>

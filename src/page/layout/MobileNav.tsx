@@ -1,10 +1,11 @@
 import Logo from '../../assets/img/logo.jpeg';
 import PropTypes, {InferProps} from "prop-types";
+import {Link} from "react-router-dom";
 export default function MobileNav ({handleShowMenu}: InferProps<typeof MobileNav.propTypes>) {
     return (
         <div className="mobile-nav">
             <div className="amado-navbar-brand">
-                <a href="#"><img src={Logo} alt="" width={60} height={60}/></a>
+                <Link to="/"><img src={Logo} alt="" width={60} height={60}/></Link>
             </div>
             <div className="amado-navbar-toggler" onClick={handleShowMenu}>
                 <span/><span/><span/>

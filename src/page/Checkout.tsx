@@ -120,7 +120,7 @@ const Checkout = () => {
                                                 type="text"
                                                 className="form-control"
                                                 value={name}
-                                                placeholder={t("Tên đầy đủ")}
+                                                placeholder={t("Tên đầy đủ *")}
                                                 onChange={(e) => setName(e.target.value)}
                                                 required />
                                         </div>
@@ -130,7 +130,7 @@ const Checkout = () => {
                                                 type="tel"
                                                 className="form-control"
                                                 value={phone}
-                                                placeholder={t("Số điện thoại")}
+                                                placeholder={t("Số điện thoại *")}
                                                 onChange={(e) => setPhone(e.target.value)}
                                                 required
                                             />
@@ -152,7 +152,7 @@ const Checkout = () => {
                                                 "nice-select w-100"}
                                                 onClick={() => setIsOpenProvinceDropdown(!isOpenProvinceDropdown)}
                                             >
-                                                <span className="current pl-2">{province ? province : t("Tỉnh, thành phố")}</span>
+                                                <span className="current pl-2">{province ? province : t("Tỉnh, thành phố *")}</span>
                                                 <ul className="list">
                                                     {
                                                         listProvince.map((item: any) => (
@@ -168,7 +168,7 @@ const Checkout = () => {
                                                 "nice-select w-100"}
                                                 onClick={() => setIsOpenDistrictDropdown(!isOpenDistrictDropdown && listDistrict.length > 0)}
                                             >
-                                                <span className="current pl-2">{district ? district : t("Quận, huyện")}</span>
+                                                <span className="current pl-2">{district ? district : t("Quận, huyện *")}</span>
                                                 <ul className="list">
                                                     {
                                                         listDistrict.map((item: any) => (
@@ -184,7 +184,7 @@ const Checkout = () => {
                                                 "nice-select w-100"}
                                                 onClick={() => setIsOpenWardDropdown(!isOpenWardDropdown && listWard.length > 0 && listDistrict.length > 0)}
                                             >
-                                                <span className="current pl-2">{ward ? ward : t("Xã, phường")}</span>
+                                                <span className="current pl-2">{ward ? ward : t("Xã, phường *")}</span>
                                                 <ul className="list">
                                                     {
                                                         listWard.map((item: any) => (
@@ -199,7 +199,7 @@ const Checkout = () => {
                                                 name='address'
                                                 type="text"
                                                 className="form-control mb-3"
-                                                placeholder={t("Địa chỉ cụ thể")}
+                                                placeholder={t("Địa chỉ cụ thể *")}
                                                 value={address}
                                                 onChange={(e) => setAddress(e.target.value)}
                                             />
@@ -211,7 +211,7 @@ const Checkout = () => {
                                                 value={note}
                                                 onChange={(e) => setNote(e.target.value)}
                                                 cols={30} rows={10}
-                                                placeholder={t("Vui lòng điền ghi chú")}
+                                                placeholder={t("Vui lòng điền ghi chú (nếu có)")}
                                             />
                                         </div>
                                     </div>
