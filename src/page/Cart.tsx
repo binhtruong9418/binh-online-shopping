@@ -93,7 +93,7 @@ export default function () {
                         </div>
                         <div className="col-12 col-lg-4">
                             <div className="cart-summary">
-                                <h5>Cart Total</h5>
+                                <h5>{t("Tổng thanh toán")}</h5>
                                 <ul className="summary-table">
                                     <li><span>{t("Số tiền đơn hàng")}:</span> <span>{totalAmount?.toLocaleString('vi-VN')}₫</span></li>
                                     <li><span>{t("Chi phí vận chuyển")}:</span> <span>0₫</span></li>

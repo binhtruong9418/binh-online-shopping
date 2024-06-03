@@ -2,7 +2,7 @@ import {useQuery} from "react-query";
 import DysonApi from "../axios/DysonApi.ts";
 import ShopCard from "../compoments/ShopCard.tsx";
 import {useMemo, useState} from "react";
-import {Pagination, Slider} from "antd";
+import {Input, Pagination, Slider} from "antd";
 import DefaultLayout from "./layout/DefaultLayout.tsx";
 import {useTranslation} from "react-i18next";
 
@@ -15,6 +15,7 @@ export default function () {
         category: '',
         min: 0,
         max: 2000000,
+        search: '',
     });
     const {t} = useTranslation()
 
@@ -139,13 +140,27 @@ export default function () {
                 <div className="container-fluid">
                     <div className={"row"}>
                         <div className={"col-12"}>
+                            <div className={"total-products"}>
+                                <p>
+                                    {t("Hiển thị")} {" "}
+                                    {dataSearch.page * dataSearch.limit - dataSearch.limit + 1} - {dataSearch.page * dataSearch.limit}
+                                    {" "} {t("trong")} {totalProduct} {t("sản phẩm")}
+                                </p>
+                            </div>
                             <div className={"product-topbar d-xl-flex align-items-center justify-content-between"}>
-                                <div className={"total-products"}>
-                                    <p>
-                                        {t("Hiển thị")} {" "}
-                                        {dataSearch.page * dataSearch.limit - dataSearch.limit + 1} - {dataSearch.page * dataSearch.limit}
-                                        {" "} {t("trong")} {totalProduct} {t("sản phẩm")}
-                                    </p>
+                                <div>
+                                    <Input
+                                        placeholder={t("Tìm kiếm")}
+                                        style={{width: 300}}
+                                        onChange={(e) => {
+                                            setDataSearch({
+                                                ...dataSearch,
+                                                search: e.target.value,
+                                                page: 1,
+                                            })
+                                        }}
+                                        size={"large"}
+                                    />
                                 </div>
                                 <div className={"product-sorting d-flex"}>
                                     <div className={"sort-by-date d-flex align-items-center mr-15"} onClick={() => {
