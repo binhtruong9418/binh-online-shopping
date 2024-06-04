@@ -19,18 +19,7 @@ const Login = () => {
                 navigate("/admin")
             }
         } catch (error: any) {
-            toast.error(error.error)
-        }
-    }
-
-    const handleGetCode = async () => {
-        try {
-            const data = await DysonApi.getEmailCode(email)
-            if (data.message === "Get code verify email successfully") {
-                toast.success("Get code verify email successfully")
-            }
-        } catch (error: any) {
-            toast.error(error.error[0])
+            toast.error(error.error || "Error login")
         }
     }
 
@@ -59,21 +48,16 @@ const Login = () => {
                                                 </div>
                                                 <div className="form-group">
                                                     <input
-                                                        type="text"
+                                                        type="password"
                                                         className="form-control 
                                                         form-control-user"
                                                         id="exampleInputPassword"
-                                                        placeholder="Code"
+                                                        placeholder="Password"
                                                         value={code}
                                                         onChange={
                                                             (e) => setCode(e.target.value)
                                                         }
                                                     />
-                                                </div>
-
-
-                                                <div className="btn btn-info btn-user btn-block" onClick={handleGetCode}>
-                                                    Get Code
                                                 </div>
 
                                                 <div className="btn btn-primary btn-user btn-block" onClick={handleLogin}>

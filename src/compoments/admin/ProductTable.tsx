@@ -43,17 +43,17 @@ export default function ProductTable(): JSX.Element {
         try {
             const res = await DysonApi.deleteProductById(id)
             if (res) {
-                toast.success('Delete product successfully')
+                toast.success('Xóa sách thành công!')
                 await refetch()
             }
         } catch (error) {
-            toast.error('Delete product failed')
+            toast.error('Xóa sách thất bại')
         }
     }
 
     const columns = [
         {
-            title: 'Image',
+            title: 'Ảnh',
             dataIndex: 'productImage',
             key: 'productImage',
             render: (productImage: string[]) => {
@@ -82,13 +82,13 @@ export default function ProductTable(): JSX.Element {
             width: 120
         },
         {
-            title: 'Name',
+            title: 'Tên sách',
             dataIndex: 'productName',
             key: 'productName',
             width: 200
         },
         {
-            title: 'Description',
+            title: 'Miêu tả',
             dataIndex: 'productDescription',
             key: 'productDescription',
             width: 100,
@@ -103,41 +103,54 @@ export default function ProductTable(): JSX.Element {
             }
         },
         {
-            title: 'Category',
+            title: 'Danh mục',
             dataIndex: 'productCategory',
             key: 'productCategory',
             width: 120
         },
         {
-            title: 'Price',
+            title: 'Thông tin sách',
+            key: 'productDetail',
+            dataIndex: 'productDetail',
+            render: (productDetail: any) => (
+                <div>
+                    <p>Tác giả: {productDetail?.author}</p>
+                    <p>NXB: {productDetail?.publisher}</p>
+                    <p>Kích thước: {productDetail?.dimension}</p>
+                    <p>Số trang: {productDetail?.totalPage}</p>
+                </div>
+            ),
+        },
+        {
+            title: 'Giá',
             dataIndex: 'productPrice',
             key: 'productPrice',
             render: (productPrice: number) => <p>{productPrice?.toLocaleString('vi-VN')}₫</p>,
             width: 100
         },
         {
-            title: 'Discount',
+            title: 'Khuyến mãi',
             dataIndex: 'productDiscount',
             key: 'productDiscount',
             render: (productDiscount: number) => <p>{productDiscount}%</p>,
             width: 100
         },
         {
-            title: 'Quantity',
+            title: 'Số lượng',
             dataIndex: 'productQuantity',
             key: 'productQuantity',
             render: (productQuantity: number) => <p>{productQuantity}</p>,
             width: 100
         },
         {
-            title: 'Created At',
+            title: 'Ngày tạo',
             dataIndex: 'createdAt',
             key: 'createdAt',
             render: (createdAt: string) => <p>{moment(createdAt).format("DD/MM/YYYY")}</p>,
             width: 120
         },
         {
-            title: 'Action',
+            title: 'Hành động',
             key: 'action',
             render: (_: any, record: any) => (
 
@@ -173,6 +186,7 @@ export default function ProductTable(): JSX.Element {
             productQuantity: product?.quantity,
             productDiscount: product?.discount,
             createdAt: product?.createdAt,
+            productDetail: product?.productDetail
         }
     })
 
@@ -182,11 +196,13 @@ export default function ProductTable(): JSX.Element {
 
     return (
         <div>
-            <Button type="primary" className="my-3 ml-3" onClick={() => setIsAdd(true)}>New Product</Button>
+            <Button type="primary" className="my-3 ml-3" onClick={() => setIsAdd(true)}>
+                Thêm sách
+            </Button>
             <div className={'ml-3 mb-4'}>
                 <Space>
                     <Input
-                        placeholder="Search by name"
+                        placeholder="Tìm theo tên"
                         onChange={(e) => {
                             setDataSearch({
                                 ...dataSearch,
@@ -196,7 +212,7 @@ export default function ProductTable(): JSX.Element {
                         style={{width: '300px'}}
                     />
                     <Select
-                        placeholder="Select category"
+                        placeholder="Tìm theo danh mục"
                         style={{width: '200px'}}
                         onChange={(value) => {
                             setDataSearch({
@@ -206,7 +222,7 @@ export default function ProductTable(): JSX.Element {
                         }}
                         value={dataSearch.category}
                     >
-                        <Select.Option value={undefined}>All</Select.Option>
+                        <Select.Option value={undefined}>Tất cả</Select.Option>
                         {
                             listCategory.map((category: any) => (
                                 <Select.Option key={category._id} value={category.name}>{category.name}</Select.Option>
@@ -224,10 +240,10 @@ export default function ProductTable(): JSX.Element {
                         }}
                         value={dataSearch.sort}
                     >
-                        <Select.Option value={'-createdAt'}>Newest</Select.Option>
-                        <Select.Option value={'createdAt'}>Oldest</Select.Option>
-                        <Select.Option value={'-currentPrice'}>Price: High to Low</Select.Option>
-                        <Select.Option value={'currentPrice'}>Price: Low to High</Select.Option>
+                        <Select.Option value={'-createdAt'}>Mới nhất</Select.Option>
+                        <Select.Option value={'createdAt'}>Cũ nhất</Select.Option>
+                        <Select.Option value={'-currentPrice'}>Giá: cao đến thấp</Select.Option>
+                        <Select.Option value={'currentPrice'}>Giá: thấp đến cao</Select.Option>
                     </Select>
                 </Space>
             </div>
@@ -265,6 +281,10 @@ export default function ProductTable(): JSX.Element {
                     images={currentEditProduct.productImage}
                     id={currentEditProduct.key}
                     discount={currentEditProduct.productDiscount}
+                    author={currentEditProduct.productDetail.author}
+                    publisher={currentEditProduct.productDetail.publisher}
+                    totalPage={currentEditProduct.productDetail.totalPage}
+                    dimension={currentEditProduct.productDetail.dimension}
                     refetchProduct={refetch}
                 />
             }

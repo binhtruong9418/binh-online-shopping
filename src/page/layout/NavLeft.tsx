@@ -43,12 +43,21 @@ export default function () {
                 </div>
                 <nav className="amado-nav">
                     <ul>
-                        <li className={pathname === '/' ? 'active' : ''}><Link to={'/'}>{t("Trang chủ")}</Link></li>
-                        <li className={pathname === '/shop' ? 'active' : ''}><Link to={'/shop'}>{t("Sản phẩm")}</Link>
+                        <li className={pathname === '/' ? 'active' : ''}>
+                            <Link to={'/'}>{t("Trang chủ")}
+                            </Link>
                         </li>
-                        <li className={pathname === '/tracking-order' ? 'active' : ''}><Link to={'/tracking-order'}>
-                            {t("Kiểm tra đơn hàng")}
-                        </Link></li>
+                        <li className={pathname === '/shop' ? 'active' : ''}>
+                            <Link to={'/shop'}>
+                                {t("Sản phẩm")}
+                            </Link>
+                        </li>
+
+                        <li className={pathname === '/tracking-order' ? 'active' : ''}>
+                            <Link to={'/tracking-order'}>
+                                {t("Kiểm tra đơn hàng")}
+                            </Link>
+                        </li>
                         {
                             userInfo && jwtToken && (
                                 <li><Link to={'/admin'}>Admin</Link></li>

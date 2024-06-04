@@ -23,6 +23,7 @@ export default function TrackingOrderDetail() {
             const res = await DysonApi.getOrderById(queryKey[1] as string)
             const listProduct = await Promise.all(res.products.map(async (e: any) => {
                 const product = await DysonApi.getProductById(e.productId)
+                console.log(product, "product")
                 return {
                     ...product,
                     quantity: e.quantity
@@ -35,6 +36,8 @@ export default function TrackingOrderDetail() {
         }, {
             enabled: !!orderId
         })
+
+    console.log(orderDetail)
     const totalNotDiscount = orderDetail?.products?.reduce((acc: number, cur: any) => acc + cur.quantity * cur.price, 0)
     const totalDiscount = orderDetail?.products?.reduce((acc: number, cur: any) => acc + cur.quantity * cur.discount * cur.price, 0)
     if (isLoading) {
@@ -48,7 +51,8 @@ export default function TrackingOrderDetail() {
                 <div className="container-fluid">
                     <div className="row mb-5">
                         <div className="col-12 text-left mt-3 mt-sm-0">
-                            <Typography.Title level={3} style={{marginBottom: '0px'}}>{t("Mã đơn hàng")}:</Typography.Title>
+                            <Typography.Title level={3}
+                                              style={{marginBottom: '0px'}}>{t("Mã đơn hàng")}:</Typography.Title>
                             <Typography.Title level={3}>{orderId}</Typography.Title>
                         </div>
                     </div>
@@ -169,17 +173,36 @@ export default function TrackingOrderDetail() {
                                     return (
                                         <>
                                             {
-                                                index !== 0 && <Divider />
+                                                index !== 0 && <Divider/>
                                             }
                                             <div
                                                 className={'d-flex align-items-center mb-3'}
                                             >
-                                                <img src={e?.images[0]} width={120}/>
+                                                {
+                                                    e.images && e.images.length && (
+                                                        <img src={e?.images[0]} width={120}/>
+                                                    )
+                                                }
                                                 <div>
-                                                    <div className={'ml-3'}>{upperCaseFirstLetter(e?.name)}</div>
-                                                    <div className={'ml-3'}>{t("Giá")}: {e?.currentPrice.toLocaleString('vi-VN')}₫</div>
-                                                    <div className={'ml-3'}>{t("Số lượng")}: {e?.quantity}</div>
-                                                    <div className={'ml-3 mt-5'}>{(e.quantity * e?.currentPrice).toLocaleString('vi-VN')}₫</div>
+                                                    {
+                                                        e?.name && e?.currentPrice ? (
+                                                            <>
+                                                                <div
+                                                                    className={'ml-3'}>{upperCaseFirstLetter(e?.name)}</div>
+
+                                                                <div
+                                                                    className={'ml-3'}>{t("Giá")}: {e?.currentPrice.toLocaleString('vi-VN')}₫
+                                                                </div>
+                                                                <div
+                                                                    className={'ml-3'}>{t("Số lượng")}: {e?.quantity}</div>
+                                                                <div
+                                                                    className={'ml-3 mt-5'}>{(e.quantity * e?.currentPrice).toLocaleString('vi-VN')}₫
+                                                                </div>
+                                                            </>
+                                                        ) : (
+                                                            <div className={'ml-3'}>{t("Số lượng")}: {e?.quantity}</div>
+                                                        )
+                                                    }
                                                 </div>
                                             </div>
                                         </>
@@ -199,7 +222,7 @@ export default function TrackingOrderDetail() {
                             }}/>
                             <div>
                                 <div className={'d-flex justify-content-between align-items-center mb-1'}>
-                                    <div>{t("Số tiền đơn hàng")}: </div>
+                                    <div>{t("Số tiền đơn hàng")}:</div>
                                     <div>{totalNotDiscount?.toLocaleString('vi-VN')}₫</div>
                                 </div>
                                 <div className={'d-flex justify-content-between align-items-center mb-1'}>
@@ -207,11 +230,11 @@ export default function TrackingOrderDetail() {
                                     <div>- {totalDiscount?.toLocaleString('vi-VN')}₫</div>
                                 </div>
                                 <div className={'d-flex justify-content-between align-items-center mb-1'}>
-                                    <div>{t("Chi phí vận chuyển")}: </div>
+                                    <div>{t("Chi phí vận chuyển")}:</div>
                                     <div>{0?.toLocaleString('vi-VN')}₫</div>
                                 </div>
                             </div>
-                            <Divider />
+                            <Divider/>
                             <div className={'d-flex justify-content-between align-items-center'}>
                                 <div>{t("Tổng cộng")}:</div>
                                 <div>{(totalNotDiscount - totalDiscount)?.toLocaleString('vi-VN')}₫</div>

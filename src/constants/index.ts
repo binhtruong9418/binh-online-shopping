@@ -10,31 +10,31 @@ export enum ORDER_STATUS {
 
 export const ORDER_STATUS_LABEL = [
     {
-        label: "Pending",
+        label: "Đang chờ",
         value: ORDER_STATUS.PENDING
     },
     {
-        label: "Paid",
+        label: "Đã thanh toán",
         value: ORDER_STATUS.PAID
     },
     {
-        label: "Cancelled",
+        label: "Đã hủy",
         value: ORDER_STATUS.CANCELLED
     },
     {
-        label: "Confirmed",
+        label: "Đã xác nhận",
         value: ORDER_STATUS.CONFIRMED
     },
     {
-        label: "Refunded",
+        label: "Đã hoàn tiền",
         value: ORDER_STATUS.REFUNDED
     },
     {
-        label: "Delivering",
+        label: "Đang giao",
         value: ORDER_STATUS.DELIVERING
     },
     {
-        label: "Delivered",
+        label: "Đã giao",
         value: ORDER_STATUS.DELIVERED
     }
 ]

@@ -102,7 +102,7 @@ export default function () {
                                 </ul>
                                 <div className="cart-btn mt-100">
                                     <Link to="/checkout" className="btn amado-btn w-100">
-                                        {t("Thanh toán")}
+                                        {t("Tạo đơn hàng")}
                                     </Link>
                                 </div>
                             </div>

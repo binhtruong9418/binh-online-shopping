@@ -8,6 +8,7 @@ import DefaultLayout from "./layout/DefaultLayout";
 import {upperCaseFirstLetter} from "../utils";
 import {useTranslation} from "react-i18next";
 
+
 export default function () {
     const {id} = useParams();
     const [quantity, setQuantity] = useState<number>(1);
@@ -146,6 +147,20 @@ export default function () {
                                         </div>
                                     </div>
                                     <p className="avaibility"><i className="fa fa-circle"></i> {t("Còn hàng")}</p>
+                                </div>
+                                <div className={'mt-3'}>
+                                    <div>
+                                        Nhà xuất bản: {product?.productDetail?.publisher}
+                                    </div>
+                                    <div>
+                                        Tác giả: {product?.productDetail?.author}
+                                    </div>
+                                    <div>
+                                       Kích thước: {product?.productDetail?.dimension}
+                                    </div>
+                                    <div>
+                                        Số trang: {product?.productDetail?.totalPage} trang
+                                    </div>
                                 </div>
                                 <div className="short_overview my-5">
                                     <p>{product.description}</p>

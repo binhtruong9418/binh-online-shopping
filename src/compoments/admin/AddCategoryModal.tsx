@@ -24,7 +24,7 @@ const AddCategoryModal = ({
                 description: categoryDescription || undefined,
             })
             await refetchCategory()
-            toast.success("Create category successfully");
+            toast.success("Thêm danh mục thành công");
             onResetForm()
             setIsVisible(false);
         } catch (error: any) {
@@ -47,7 +47,7 @@ const AddCategoryModal = ({
         >
             <div>
                 <Typography.Title level={4}>
-                    Add Category
+                    Thêm danh mục
                 </Typography.Title>
 
                 <Form
@@ -66,11 +66,11 @@ const AddCategoryModal = ({
                         name='categoryName'
                         rules={[{
                             required: true,
-                            message: 'Please input your category name!',
+                            message: 'Vui lòng nhập tên danh mục!',
                         }]}
                     >
                         <Input
-                            placeholder="Category Name"
+                            placeholder="Tên danh mục"
                             bordered={false}
                             required
                         />
@@ -79,7 +79,7 @@ const AddCategoryModal = ({
                         name="categoryDescription"
                     >
                         <Input.TextArea
-                            placeholder="Description"
+                            placeholder="Miêu tả"
                             className="border round-sm"
                             rows={4}
                         />
@@ -87,7 +87,7 @@ const AddCategoryModal = ({
 
                     <Form.Item>
                         <Button type="primary" htmlType="submit" className="w-50" disabled={isLoading}>
-                            Submit
+                            {isLoading ? 'Loading...' : 'Thêm'}
                         </Button>
                         <Button htmlType="button" onClick={onResetForm} className="w-50">
                             Reset

@@ -1,4 +1,18 @@
-import { Button, Carousel, Form, Image, Input, InputNumber, Modal, Select, Space, Typography, Upload } from 'antd';
+import {
+    Button,
+    Carousel,
+    Col,
+    Form,
+    Image,
+    Input,
+    InputNumber,
+    Modal,
+    Row,
+    Select,
+    Space,
+    Typography,
+    Upload
+} from 'antd';
 import { useState, useRef } from 'react';
 import { toast } from 'react-toastify'
 
@@ -18,6 +32,10 @@ const EditProductModal = ({ isVisible,
     category,
     quantity,
     discount,
+    author,
+    totalPage,
+    dimension,
+    publisher,
     refetchProduct,
 }: any) => {
     const [form] = Form.useForm();
@@ -36,7 +54,18 @@ const EditProductModal = ({ isVisible,
     const handleSubmit = async () => {
         //check error when user submit
         const data = form.getFieldsValue()
-        const { productName, productDescription, productCategory, productPrice, productQuantity, productDiscount } = data
+        const {
+            productName,
+            productDescription,
+            productCategory,
+            productPrice,
+            productQuantity,
+            productDiscount,
+            author,
+            totalPage,
+            publisher,
+            dimension
+        } = data
 
         try {
             setIsLoading(true);
@@ -60,7 +89,11 @@ const EditProductModal = ({ isVisible,
                 price: productPrice,
                 quantity: productQuantity,
                 images: listNewImages,
-                discount: productDiscount
+                discount: productDiscount,
+                author,
+                totalPage,
+                publisher,
+                dimension
             })
             form.setFieldsValue({
                 productName: updateProduct.name,
@@ -68,16 +101,20 @@ const EditProductModal = ({ isVisible,
                 productCategory: updateProduct.category,
                 productPrice: updateProduct.price,
                 productQuantity: updateProduct.quantity,
-                productDiscount: updateProduct.discount
+                productDiscount: updateProduct.discount,
+                author: updateProduct.productDetail.author,
+                totalPage: updateProduct.productDetail.totalPage,
+                publisher: updateProduct.productDetail.publisher,
+                dimension: updateProduct.productDetail.dimension
             })
 
             setImagesFile(updateProduct.images)
             setListImage(updateProduct.images)
             await refetchProduct()
-            toast.success("Edit product successfully");
+            toast.success("Cập nhật sách thành công");
             setIsVisible(false);
         } catch (error) {
-            toast.error("Edit product failed");
+            toast.error("Cập nhật sách thất bại");
         } finally {
             setIsLoading(false);
         }
@@ -94,7 +131,7 @@ const EditProductModal = ({ isVisible,
             reader.readAsDataURL(file);
 
         } else {
-            toast.error("Accept only image file");
+            toast.error("Chỉ chấp nhận file ảnh");
         }
     };
 
@@ -117,7 +154,7 @@ const EditProductModal = ({ isVisible,
         >
             <div>
                 <Typography.Title level={4}>
-                    Edit Product
+                    Cập nhật sách
                 </Typography.Title>
 
                 <Space
@@ -139,7 +176,7 @@ const EditProductModal = ({ isVisible,
                     >
                         <Button className="d-flex m-auto align-items-center">
                             <CloudUploadOutlined className='mr-2' />
-                            <div>Upload (Max: 10)</div>
+                            <div>Tải ảnh (Tối đa: 10)</div>
                         </Button>
                     </Upload.Dragger>
                     {imagesFile && imagesFile.length > 0 &&
@@ -188,7 +225,11 @@ const EditProductModal = ({ isVisible,
                         productCategory: category,
                         productPrice: price,
                         productQuantity: quantity,
-                        productDiscount: discount
+                        productDiscount: discount,
+                        author: author,
+                        totalPage,
+                        publisher,
+                        dimension
                     }}
                     onFinish={handleSubmit}
                     form={form}
@@ -197,11 +238,11 @@ const EditProductModal = ({ isVisible,
                         name='productName'
                         rules={[{
                             required: true,
-                            message: 'Please input your product name!',
+                            message: 'Vui lòng nhập tên sách!',
                         }]}
                     >
                         <Input
-                            placeholder="Product Name"
+                            placeholder="Tên sách"
                             bordered={false}
                             required
                         />
@@ -220,11 +261,11 @@ const EditProductModal = ({ isVisible,
                         name="productCategory"
                         rules={[{
                             required: true,
-                            message: 'Please select category'
+                            message: 'Vui lòng chọn danh mục!'
                         }]}
                     >
                         <Select
-                            placeholder="Category"
+                            placeholder="Danh mục"
                             allowClear
                             size="large"
                         >
@@ -238,33 +279,71 @@ const EditProductModal = ({ isVisible,
                         </Select>
                     </Form.Item>
                     <Form.Item
+                        name={"author"}
+                    >
+                        <Input
+                            placeholder="Tác giả"
+                            size="large"
+                        />
+                    </Form.Item>
+                    <Form.Item
+                        name={"publisher"}
+                    >
+                        <Input
+                            placeholder="Nhà xuất bản"
+                            size="large"
+                        />
+                    </Form.Item>
+                    <Row gutter={[10, 10]}>
+                        <Col span={12}>
+                            <Form.Item
+                                name={"dimension"}
+                            >
+                                <Input
+                                    placeholder="Kích thước"
+                                    size="large"
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item
+                                name={"totalPage"}
+                                style={{width: '100%'}}
+                            >
+                                <InputNumber
+                                    placeholder="Số trang"
+                                    size="large"
+                                    style={{width: '100%'}}
+                                />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Form.Item
                         name="productPrice"
                         rules={[{
                             required: true,
-                            message: 'Please input price'
+                            message: 'Vui lòng nhập giá sách'
                         }]}
                     >
                         <InputNumber
-                            placeholder="Price"
+                            placeholder="Giá"
                             addonAfter='₫'
                             className="w-100"
                             size="large"
+                            min={0}
                         />
                     </Form.Item>
 
 
                     <Form.Item
                         name="productDiscount"
-                        rules={[{
-                            required: true,
-                            message: 'Please input discount'
-                        }]}
                     >
                         <InputNumber
-                            placeholder="Discount"
+                            placeholder="Khuyến mãi"
                             addonAfter='%'
                             className="w-100"
                             size="large"
+                            defaultValue={0}
                         />
                     </Form.Item>
 
@@ -272,11 +351,11 @@ const EditProductModal = ({ isVisible,
                         name="productQuantity"
                         rules={[{
                             required: true,
-                            message: 'Please input quantity'
+                            message: 'Vui lòng nhập số lượng sách!'
                         }]}
                     >
                         <InputNumber
-                            placeholder="Quantity"
+                            placeholder="Số lượng"
                             className="w-100"
                             size="large"
                         />
@@ -284,10 +363,10 @@ const EditProductModal = ({ isVisible,
 
                     <Form.Item>
                         <Button type="primary" htmlType="submit" className="w-50" disabled={isLoading}>
-                            Submit
+                            {isLoading ? 'Loading...' : 'Cập nhật sách'}
                         </Button>
                         <Button htmlType="button" onClick={onResetForm} className="w-50">
-                            Reset
+                            {isLoading ? 'Loading...' : 'Reset'}
                         </Button>
                     </Form.Item>
                 </Form>

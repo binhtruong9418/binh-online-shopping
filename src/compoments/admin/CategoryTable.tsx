@@ -27,7 +27,7 @@ const EditableCell = ({
                     rules={[
                         {
                             required: true,
-                            message: `Please Input ${title}!`,
+                            message: `Vui lòng điền ${title}!`,
                         },
                     ]}
                 >
@@ -75,7 +75,7 @@ export default function CategoryTable() {
                 description: row.description
             })
             if (categoryUpdate) {
-                toast.success('Update category successfully')
+                toast.success('Cập nhật danh mục thành công')
                 await refetch()
                 setEditingKey('');
             }
@@ -88,22 +88,22 @@ export default function CategoryTable() {
         try {
             const resp = await DysonApi.deleteCategoryById(id)
             if (resp) {
-                toast.success('Delete category successfully')
+                toast.success('Xóa danh mục thành công')
                 await refetch()
             }
         } catch (error) {
-            toast.error('Delete category failed')
+            toast.error('Xóa danh mục thâất bại')
         }
     }
     const columns = [
         {
-            title: 'Name',
+            title: 'Tên',
             dataIndex: 'name',
             key: 'name',
             editable: true,
         },
         {
-            title: 'Action',
+            title: 'Hành động',
             key: 'action',
             render: (_: any, record: any) => {
                 const editable = isEditing(record);
@@ -115,10 +115,10 @@ export default function CategoryTable() {
                                 marginRight: 8,
                             }}
                         >
-                            Save
+                            OK
                         </Typography.Link>
-                        <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-                            <a>Cancel</a>
+                        <Popconfirm title="Chắc chắn muốn hủy?" onConfirm={cancel}>
+                            <a>Hủy</a>
                         </Popconfirm>
                     </span>
                 ) : (
@@ -129,7 +129,7 @@ export default function CategoryTable() {
                         >
                             <BiPencil />
                         </Button>
-                        <Popconfirm title="Sure to delete" onConfirm={() => handleDeleteCategory(record.key).then()}>
+                        <Popconfirm title="Chắc chắn muốn xóa ?" onConfirm={() => handleDeleteCategory(record.key).then()}>
                             <Button type="text" danger>
                                 <BiTrash/>
                             </Button>
@@ -165,7 +165,9 @@ export default function CategoryTable() {
 
     return (
         <>
-            <Button type='primary' className="my-3 ml-3" onClick={() => setIsAdd(true)}>New Category</Button>
+            <Button type='primary' className="my-3 ml-3" onClick={() => setIsAdd(true)}>
+                Thêm danh mục
+            </Button>
             <Form form={form} component={false}>
                 <Table
                     components={{

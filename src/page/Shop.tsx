@@ -15,7 +15,7 @@ export default function () {
         category: '',
         min: 0,
         max: 2000000,
-        search: '',
+        name: '',
     });
     const {t} = useTranslation()
 
@@ -155,7 +155,7 @@ export default function () {
                                         onChange={(e) => {
                                             setDataSearch({
                                                 ...dataSearch,
-                                                search: e.target.value,
+                                                name: e.target.value,
                                                 page: 1,
                                             })
                                         }}

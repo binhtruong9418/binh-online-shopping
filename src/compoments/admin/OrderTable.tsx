@@ -12,25 +12,25 @@ import {MdOutlineLocalShipping} from "react-icons/md";
 const expandableProduct = (products: any) => {
     const columns = [
         {
-            title: 'Product ID',
+            title: 'ID sản phẩm',
             dataIndex: 'productId',
             key: 'productId',
             render: (productId: number) => <p>{productId}</p>,
         },
         {
-            title: 'Name',
+            title: 'Tên',
             dataIndex: 'productName',
             key: 'productName',
             render: (productName: string) => <p>{productName}</p>,
         },
         {
-            title: 'Quantity',
+            title: 'Số lượng',
             dataIndex: 'productQuantity',
             key: 'productQuantity',
             render: (productQuantity: number) => <p>{productQuantity}</p>,
         },
         {
-            title: 'Price',
+            title: 'Giá',
             dataIndex: 'productPrice',
             key: 'productPrice',
             render: (productPrice: number) => <p>{productPrice?.toLocaleString('vi-VN')}₫</p>,
@@ -107,7 +107,7 @@ export default function OrderTable(): JSX.Element {
 
     const columns = [
         {
-            title: 'Order Date',
+            title: 'Ngày đặt',
             dataIndex: 'orderDate',
             key: 'orderDate',
             render: (orderDate: string) => (
@@ -119,7 +119,7 @@ export default function OrderTable(): JSX.Element {
             width: 100,
         },
         {
-            title: 'Shipping Detail',
+            title: 'Thông tin giao hàng',
             dataIndex: 'shippingDetail',
             key: 'shippingDetail',
             render: (shippingDetail: any) =>
@@ -128,9 +128,9 @@ export default function OrderTable(): JSX.Element {
                     <p>{shippingDetail.email}</p>
                     <p>{shippingDetail.address}</p>
                     <Divider />
-                    <p>Privince/City: {shippingDetail.province}</p>
-                    <p>Distric/Town: {shippingDetail.district}</p>
-                    <p>Ward: {shippingDetail.ward}</p>
+                    <p>Tỉnh/Thành phố: {shippingDetail.province}</p>
+                    <p>Quận/Huyện: {shippingDetail.district}</p>
+                    <p>Xã/Xóm: {shippingDetail.ward}</p>
                 </div>,
             width: 400,
         },
@@ -142,60 +142,60 @@ export default function OrderTable(): JSX.Element {
             width: 100,
         },
         {
-            title: 'Payment Method',
+            title: 'Phương thức thanh toán',
             dataIndex: 'paymentMethod',
             key: 'paymentMethod',
             render: (paymentMethod: string) => <p className={'text-uppercase'}>{paymentMethod}</p>,
             width: 100,
         },
         {
-            title: 'Order Status',
+            title: 'Trạng thái',
             dataIndex: 'status',
             key: 'status',
             render: (status: string) => {
                 switch (status) {
                     case ORDER_STATUS.PENDING:
                         return <Tag icon={<SyncOutlined spin/>} color="processing">
-                            {'Pending'}
+                            {'Đang chờ'}
                         </Tag>
                     case ORDER_STATUS.PAID:
-                        return <Tag color="blue">{"Paid"}</Tag>
+                        return <Tag color="blue">{"Đã thanh toán"}</Tag>
                     case ORDER_STATUS.CONFIRMED:
-                        return <Tag icon={<CheckCircleOutlined/>} color="success">{"Confirmed"}</Tag>
+                        return <Tag icon={<CheckCircleOutlined/>} color="success">{"Đã xác nhận"}</Tag>
                     case ORDER_STATUS.CANCELLED:
-                        return <Tag icon={<MinusCircleOutlined/>} color="red">{"Cancelled"}</Tag>
+                        return <Tag icon={<MinusCircleOutlined/>} color="red">{"Đã hủy"}</Tag>
                     case ORDER_STATUS.REFUNDED:
                         return <Tag icon={<RiRefund2Line className={'mr-1'}/>} color="red"
-                                    className={'items-center flex'}>{"Refund"}</Tag>
+                                    className={'items-center flex'}>{"Đã hoàn tiền"}</Tag>
                     case ORDER_STATUS.DELIVERING:
                         return <Tag icon={<MdOutlineLocalShipping className={'mr-1'}/>} color="blue"
-                                    className={'items-center flex'}>{"Delivering"}</Tag>
+                                    className={'items-center flex'}>{"Đang giao"}</Tag>
                     case ORDER_STATUS.DELIVERED:
-                        return <Tag icon={<CheckCircleOutlined/>} color="success">{"Delivered"}</Tag>
+                        return <Tag icon={<CheckCircleOutlined/>} color="success">{"Đã giao"}</Tag>
                     default:
                         return <Tag icon={<SyncOutlined/>} color="processing">
-                            {"Pending"}
+                            {"Đang chờ"}
                         </Tag>
                 }
             },
             width: 120,
         },
         {
-            title: 'Total',
+            title: 'Tổng',
             dataIndex: 'total',
             key: 'total',
             render: (total: number) => <p>{total.toLocaleString('vi-VN')}₫</p>,
             width: 100,
         },
         {
-            title: 'Action',
+            title: 'Hành động',
             key: 'action',
             render: (_: any, record: any) => {return (
                 <Space
                     direction={"vertical"}
                 >
                     <Popconfirm
-                        title={"Do you want to confirm this order?"}
+                        title={"Bạn muốn xác nhận đơn hàng này?"}
                         onConfirm={async () => await handleConfirmOrder(record)}
                         disabled={record.status !== ORDER_STATUS.PAID}
                     >
@@ -206,11 +206,11 @@ export default function OrderTable(): JSX.Element {
                             className={'w-32 items-center justify-center flex bg-green-500'}
                             disabled={record.status !== ORDER_STATUS.PAID}
                         >
-                            {"Confirm"}
+                            {"Xác nhận"}
                         </Button>
                     </Popconfirm>
                     <Popconfirm
-                        title={"Do you want to refund this order?"}
+                        title={"Bạn muốn hoàn tiền đơn hàng này?"}
                         onConfirm={async () => await handleRefundOrder(record)}
                         disabled={record.status !== ORDER_STATUS.CANCELLED}
                     >
@@ -219,10 +219,10 @@ export default function OrderTable(): JSX.Element {
                             icon={<RiRefund2Line className={'text-lg'}/>}
                             className={'w-32 items-center justify-center flex bg-amber-700'}
                             disabled={record.status !== ORDER_STATUS.CANCELLED}
-                        >{"Refund"}</Button>
+                        >{"Hoàn tiền"}</Button>
                     </Popconfirm>
                     <Popconfirm
-                        title={"Do you want to update this order to delivering?"}
+                        title={"Bạn muốn cập nhật trạng thái đang giao hàng?"}
                         onConfirm={async () => await handleUpdateDeliveringOrder(record)}
                         disabled={record.status !== ORDER_STATUS.CONFIRMED}
                     >
@@ -232,11 +232,11 @@ export default function OrderTable(): JSX.Element {
                             icon={<MdOutlineLocalShipping className={'text-lg'}/>}
                             className={'w-32 items-center justify-center flex'}
                             disabled={record.status !== ORDER_STATUS.CONFIRMED}
-                        >{"Delivering"}</Button>
+                        >{"Đang giao"}</Button>
                     </Popconfirm>
 
                     <Popconfirm
-                        title={"Do you want to update this order to success?"}
+                        title={"Bạn có muốn cập nhật trạng thái đơn hàng?"}
                         onConfirm={async () => await handleUpdateDeliveredOrder(record)}
                         disabled={record.status !== ORDER_STATUS.DELIVERING}
                     >
@@ -246,7 +246,7 @@ export default function OrderTable(): JSX.Element {
                             icon={<MdOutlineLocalShipping className={'text-lg'}/>}
                             className={'w-32 items-center justify-center flex'}
                             disabled={record.status !== ORDER_STATUS.DELIVERING}
-                        >{"Delivered"}</Button>
+                        >{"Đã giao"}</Button>
                     </Popconfirm>
                 </Space>
             );
@@ -260,11 +260,11 @@ export default function OrderTable(): JSX.Element {
         try {
             const confirmStatus = await DysonApi.updateOrderStatus(record.orderId, ORDER_STATUS.CONFIRMED)
             if (confirmStatus) {
-                toast.success('Confirm order successfully')
+                toast.success('Xác nhận đơn hàng thành công')
                 await refetch()
             }
         } catch (error) {
-            toast.error('Confirm order failed')
+            toast.error('Xác nhận đơn hàng thất bại')
         }
     }
 
@@ -272,11 +272,11 @@ export default function OrderTable(): JSX.Element {
         try {
             const refundStatus = await DysonApi.updateOrderStatus(record.orderId, ORDER_STATUS.REFUNDED)
             if (refundStatus) {
-                toast.success('Refund order successfully')
+                toast.success('Hoàn tiền thành công')
                 await refetch()
             }
         } catch (error) {
-            toast.error('Refund order failed')
+            toast.error('Hoàn tiền thất bại')
         }
     }
 
@@ -284,22 +284,22 @@ export default function OrderTable(): JSX.Element {
         try {
             const updateStatus = await DysonApi.updateOrderStatus(record.orderId, ORDER_STATUS.DELIVERING)
             if (updateStatus) {
-                toast.success('Update order status successfully')
+                toast.success('Cập nhật trạng thái thành công')
                 await refetch()
             }
         } catch (error) {
-            toast.error('Update order status failed')
+            toast.error('Cập nhật trạng thái thất bại')
         }
     }
     const handleUpdateDeliveredOrder = async (record: any) => {
         try {
             const updateStatus = await DysonApi.updateOrderStatus(record.orderId, ORDER_STATUS.DELIVERED)
             if (updateStatus) {
-                toast.success('Update order status successfully')
+                toast.success('Cập nhật trạng thái thành công')
                 await refetch()
             }
         } catch (error) {
-            toast.error('Update order status failed')
+            toast.error('Cập nhật trạng thái thất bại')
         }
     }
 
@@ -312,7 +312,7 @@ export default function OrderTable(): JSX.Element {
             <div className={'ml-3 mb-4'}>
                 <Space>
                     <Select
-                        placeholder="Select Status"
+                        placeholder="Lọc trạng thái"
                         style={{width: '200px'}}
                         onChange={(value) => {
                             setDataSearch({
@@ -322,7 +322,7 @@ export default function OrderTable(): JSX.Element {
                         }}
                         value={dataSearch.status}
                     >
-                        <Select.Option value={undefined}>All</Select.Option>
+                        <Select.Option value={undefined}>Tất cả</Select.Option>
                         {
                             ORDER_STATUS_LABEL .map((status: any) => (
                                 <Select.Option key={status.value} value={status.value}>{status.label}</Select.Option>
@@ -330,8 +330,8 @@ export default function OrderTable(): JSX.Element {
                         }
                     </Select>
                     <Select
-                        placeholder={"Payment method"}
-                        style={{width: '150px'}}
+                        placeholder={"Phương thức thanh toán"}
+                        style={{width: '200px'}}
                         onChange={(value) => {
                             setDataSearch({
                                 ...dataSearch,
@@ -340,7 +340,7 @@ export default function OrderTable(): JSX.Element {
                         }}
                         value={dataSearch.paymentMethod}
                     >
-                        <Select.Option value={undefined}>All</Select.Option>
+                        <Select.Option value={undefined}>Tất cả</Select.Option>
                         <Select.Option value={'cod'}>COD</Select.Option>
                         <Select.Option value={'vnpay'}>VNPAY</Select.Option>
                     </Select>
@@ -355,8 +355,8 @@ export default function OrderTable(): JSX.Element {
                         }}
                         value={dataSearch.sort}
                     >
-                        <Select.Option value={'-createdAt'}>Newest</Select.Option>
-                        <Select.Option value={'createdAt'}>Oldest</Select.Option>
+                        <Select.Option value={'-createdAt'}>Mới nhất</Select.Option>
+                        <Select.Option value={'createdAt'}>Cũ nhất</Select.Option>
                     </Select>
                 </Space>
             </div>

@@ -125,9 +125,9 @@ const DysonApi = {
         return response.data
     },
 
-    login: async (email: string, code: string): Promise<any> => {
+    login: async (email: string, password: string): Promise<any> => {
         const url = 'user/login'
-        const response = await AxiosClient.post(url, { email, code });
+        const response = await AxiosClient.post(url, { email, password });
         return response.data
     },
 

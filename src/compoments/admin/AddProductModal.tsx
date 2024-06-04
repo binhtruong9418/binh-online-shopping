@@ -1,4 +1,18 @@
-import {Button, Carousel, Form, Image, Input, InputNumber, Modal, Select, Space, Typography, Upload} from 'antd';
+import {
+    Button,
+    Carousel,
+    Col,
+    Form,
+    Image,
+    Input,
+    InputNumber,
+    Modal,
+    Row,
+    Select,
+    Space,
+    Typography,
+    Upload
+} from 'antd';
 import {useRef, useState} from 'react';
 import {toast} from 'react-toastify'
 
@@ -30,7 +44,18 @@ const AddProductModal = ({
     const handleSubmit = async () => {
         //check error when user submit
         const data = form.getFieldsValue()
-        const { productName, productDescription, productCategory, productPrice, productQuantity, productDiscount } = data
+        const {
+            productName,
+            productDescription,
+            productCategory,
+            productPrice,
+            productQuantity,
+            productDiscount,
+            author,
+            publisher,
+            dimension,
+            totalPage
+        } = data
 
         try {
             setIsLoading(true);
@@ -47,10 +72,14 @@ const AddProductModal = ({
                 price: productPrice,
                 quantity: productQuantity,
                 images: listNewImages,
-                discount: productDiscount ?? 0
+                discount: productDiscount ?? 0,
+                author,
+                publisher,
+                dimension,
+                totalPage
             })
             await refetchProduct()
-            toast.success("Create product successfully");
+            toast.success("Thêm sách thành công");
             onResetForm()
             setIsVisible(false);
         } catch (error: any) {
@@ -71,7 +100,7 @@ const AddProductModal = ({
             reader.readAsDataURL(file);
 
         } else {
-            toast.error("Accept only image file");
+            toast.error("Chỉ chấp nhận file ảnh");
         }
     };
 
@@ -94,7 +123,7 @@ const AddProductModal = ({
         >
             <div>
                 <Typography.Title level={4}>
-                    Create Product
+                    Thêm sách
                 </Typography.Title>
 
                 <Space
@@ -115,7 +144,7 @@ const AddProductModal = ({
                     >
                         <Button className="d-flex m-auto align-items-center">
                             <CloudUploadOutlined className='mr-2' />
-                            <div>Upload (Max: 10)</div>
+                            <div>Tải ảnh (Tối đa: 10)</div>
                         </Button>
                     </Upload.Dragger>
                     {imagesFile && imagesFile.length > 0 &&
@@ -165,11 +194,11 @@ const AddProductModal = ({
                         name='productName'
                         rules={[{
                             required: true,
-                            message: 'Please input your product name!',
+                            message: 'Vui lòng nhập tên sach!',
                         }]}
                     >
                         <Input
-                            placeholder="Product Name"
+                            placeholder="Tên sách"
                             bordered={false}
                             required
                         />
@@ -178,7 +207,7 @@ const AddProductModal = ({
                         name="productDescription"
                     >
                         <Input.TextArea
-                            placeholder="Description"
+                            placeholder="Miêu tả"
                             className="border round-sm"
                             rows={4}
                         />
@@ -188,11 +217,11 @@ const AddProductModal = ({
                         name="productCategory"
                         rules={[{
                             required: true,
-                            message: 'Please select category'
+                            message: 'Vui lòng chọn danh mục!'
                         }]}
                     >
                         <Select
-                            placeholder="Category"
+                            placeholder="Danh mục"
                             allowClear
                             size="large"
                         >
@@ -206,14 +235,54 @@ const AddProductModal = ({
                         </Select>
                     </Form.Item>
                     <Form.Item
+                        name={"author"}
+                    >
+                        <Input
+                            placeholder="Tác giả"
+                            size="large"
+                        />
+                    </Form.Item>
+                    <Form.Item
+                        name={"publisher"}
+                    >
+                        <Input
+                            placeholder="Nhà xuất bản"
+                            size="large"
+                        />
+                    </Form.Item>
+                    <Row gutter={[10, 10]}>
+                        <Col span={12}>
+                            <Form.Item
+                                name={"dimension"}
+                            >
+                                <Input
+                                    placeholder="Kích thước"
+                                    size="large"
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item
+                                name={"totalPage"}
+                                style={{width: '100%'}}
+                            >
+                                <InputNumber
+                                    placeholder="Số trang"
+                                    size="large"
+                                    style={{width: '100%'}}
+                                />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Form.Item
                         name="productPrice"
                         rules={[{
                             required: true,
-                            message: 'Please input price'
+                            message: 'Vui lòng nhập giá sách'
                         }]}
                     >
                         <InputNumber
-                            placeholder="Price"
+                            placeholder="Giá"
                             addonAfter='₫'
                             className="w-100"
                             size="large"
@@ -226,7 +295,7 @@ const AddProductModal = ({
                         name="productDiscount"
                     >
                         <InputNumber
-                            placeholder="Discount"
+                            placeholder="Khuyến mãi"
                             addonAfter='%'
                             className="w-100"
                             size="large"
@@ -238,11 +307,11 @@ const AddProductModal = ({
                         name="productQuantity"
                         rules={[{
                             required: true,
-                            message: 'Please input quantity'
+                            message: 'Vui lòng nhập số lượng sách!'
                         }]}
                     >
                         <InputNumber
-                            placeholder="Quantity"
+                            placeholder="Số lượng"
                             className="w-100"
                             size="large"
                         />
@@ -250,10 +319,10 @@ const AddProductModal = ({
 
                     <Form.Item>
                         <Button type="primary" htmlType="submit" className="w-50" disabled={isLoading}>
-                            Submit
+                            {isLoading ? 'Loading...' : 'Thêm sách'}
                         </Button>
                         <Button htmlType="button" onClick={onResetForm} className="w-50">
-                            Reset
+                            {isLoading ? 'Loading...' : 'Reset'}
                         </Button>
                     </Form.Item>
                 </Form>
