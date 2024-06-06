@@ -15,6 +15,7 @@ import moment from "moment";
 import {useState} from "react";
 import {toast} from "react-toastify";
 import DysonApi from "../axios/DysonApi.ts";
+import 'semantic-ui-css/semantic.min.css'
 
 const listComment = (
     {

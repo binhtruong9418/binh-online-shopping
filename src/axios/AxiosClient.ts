@@ -1,8 +1,8 @@
 import axios from 'axios';
 import queryString from 'query-string';
 
-// const API_URL = 'https://binh-online-shopping-be.vinhomes.co.uk/';
-const API_URL = 'http://localhost:8080';
+const API_URL = 'https://binh-online-shopping-be.vinhomes.co.uk/';
+// const API_URL = 'http://localhost:8080';
 
 const AxiosClient = axios.create({
   baseURL: API_URL,
