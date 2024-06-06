@@ -6,7 +6,7 @@ import CategoryTable from '../../compoments/admin/CategoryTable';
 import OrderTable from '../../compoments/admin/OrderTable';
 import { HomeOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
-import Logo from "../../assets/img/logo.jpeg";
+import Logo from "../../assets/img/logo.png";
 import viVN from 'antd/lib/locale/vi_VN';
 
 const { Header, Content, Sider } = Layout;

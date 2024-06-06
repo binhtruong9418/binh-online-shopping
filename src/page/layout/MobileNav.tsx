@@ -1,4 +1,4 @@
-import Logo from '../../assets/img/logo.jpeg';
+import Logo from '../../assets/img/logo.png';
 import PropTypes, {InferProps} from "prop-types";
 import {Link} from "react-router-dom";
 export default function MobileNav ({handleShowMenu}: InferProps<typeof MobileNav.propTypes>) {
