@@ -153,6 +153,24 @@ const DysonApi = {
         const response = await AxiosClient.get(url);
         return response.data
     },
+
+    createComment: async (data: any): Promise<any> => {
+        const url = 'comment'
+        const response = await AxiosClient.post(url, data);
+        return response.data
+    },
+
+    getAllCommentByProductId: async (productId: string): Promise<any> => {
+        const url = 'comment/get-all-by-product/' + productId
+        const response = await AxiosClient.get(url);
+        return response.data
+    },
+
+    checkCanComment: async (cartId: string, productId: string): Promise<any> => {
+        const url = `comment/can-comment/${cartId}/${productId}`
+        const response = await AxiosClient.get(url);
+        return response.data
+    }
 };
 
 export default DysonApi;

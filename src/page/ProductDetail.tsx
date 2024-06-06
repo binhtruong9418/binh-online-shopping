@@ -9,48 +9,7 @@ import {upperCaseFirstLetter} from "../utils";
 import {useTranslation} from "react-i18next";
 import ListComment from "../compoments/ListComment.tsx";
 
-const listComment = [
-    {
-        text: 'Sản phẩm rất tốt',
-        time: 1717692565364
-    },
-    {
-        text: 'Sản phẩm rất tốt',
-        time: 1717692565364
-    },
-    {
-        text: 'Sản phẩm rất tốt',
-        time: 1717692565364
-    },
-    {
-        text: 'Sản phẩm rất tốt',
-        time: 1717692565364
-    },
-    {
-        text: 'Sản phẩm rất tốt',
-        time: 1717692565364
-    },
-    {
-        text: 'Sản phẩm rất tốt',
-        time: 1717692565364
-    },
-    {
-        text: 'Sản phẩm rất tốt',
-        time: 1717692565364
-    },
-    {
-        text: 'Sản phẩm rất tốt',
-        time: 1717692565364
-    },
-    {
-        text: 'Sản phẩm rất tốt',
-        time: 1717692565364
-    },
-    {
-        text: 'Sản phẩm rất tốt',
-        time: 1717692565364
-    }
-]
+
 
 export default function () {
     const {id} = useParams();
@@ -73,6 +32,19 @@ export default function () {
             }
         }
     );
+
+    const {
+        data: listComment = [],
+        refetch: refetchComment
+    } = useQuery(['getCommentByProductId', id], ({queryKey}) => DysonApi.getAllCommentByProductId(queryKey[1] as string), {
+        enabled: !!id
+    });
+
+    const {
+        data: userCanComment = false
+    } = useQuery(['userCanComment', id, cartId], ({queryKey}) => DysonApi.checkCanComment(queryKey[2], queryKey[1]), {
+        enabled: !!id && !!cartId
+    })
 
     const handleUpdateQuantity = (type: string) => {
         if (type === 'plus') {
@@ -242,7 +214,13 @@ export default function () {
                         </div>
                     </div>
                 </div>
-                <ListComment listComment={listComment}/>
+                <ListComment
+                    listComment={listComment}
+                    productId={id}
+                    canComment={userCanComment}
+                    refetchComment={refetchComment}
+                    cartId={cartId}
+                />
             </div>
         </DefaultLayout>
     )
