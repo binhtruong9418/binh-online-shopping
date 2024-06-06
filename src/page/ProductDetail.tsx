@@ -7,7 +7,50 @@ import {useCookies} from 'react-cookie';
 import DefaultLayout from "./layout/DefaultLayout";
 import {upperCaseFirstLetter} from "../utils";
 import {useTranslation} from "react-i18next";
+import ListComment from "../compoments/ListComment.tsx";
 
+const listComment = [
+    {
+        text: 'Sản phẩm rất tốt',
+        time: 1717692565364
+    },
+    {
+        text: 'Sản phẩm rất tốt',
+        time: 1717692565364
+    },
+    {
+        text: 'Sản phẩm rất tốt',
+        time: 1717692565364
+    },
+    {
+        text: 'Sản phẩm rất tốt',
+        time: 1717692565364
+    },
+    {
+        text: 'Sản phẩm rất tốt',
+        time: 1717692565364
+    },
+    {
+        text: 'Sản phẩm rất tốt',
+        time: 1717692565364
+    },
+    {
+        text: 'Sản phẩm rất tốt',
+        time: 1717692565364
+    },
+    {
+        text: 'Sản phẩm rất tốt',
+        time: 1717692565364
+    },
+    {
+        text: 'Sản phẩm rất tốt',
+        time: 1717692565364
+    },
+    {
+        text: 'Sản phẩm rất tốt',
+        time: 1717692565364
+    }
+]
 
 export default function () {
     const {id} = useParams();
@@ -156,7 +199,7 @@ export default function () {
                                         Tác giả: {product?.productDetail?.author}
                                     </div>
                                     <div>
-                                       Kích thước: {product?.productDetail?.dimension}
+                                        Kích thước: {product?.productDetail?.dimension}
                                     </div>
                                     <div>
                                         Số trang: {product?.productDetail?.totalPage} trang
@@ -199,6 +242,7 @@ export default function () {
                         </div>
                     </div>
                 </div>
+                <ListComment listComment={listComment}/>
             </div>
         </DefaultLayout>
     )

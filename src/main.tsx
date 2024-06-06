@@ -6,6 +6,8 @@ import store from "./redux";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { CookiesProvider } from 'react-cookie';
 import './index.css'
+import 'semantic-ui-css/semantic.min.css'
+
 
 const queryClient = new QueryClient();
 
