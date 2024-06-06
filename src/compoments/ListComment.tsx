@@ -1,21 +1,9 @@
-import {
-    CommentText,
-    CommentMetadata,
-    CommentGroup,
-    CommentContent,
-    CommentAvatar,
-    CommentAuthor,
-    FormTextArea,
-    Button,
-    Comment,
-    Form,
-    Header,
-} from 'semantic-ui-react'
 import moment from "moment";
 import {useState} from "react";
 import {toast} from "react-toastify";
 import DysonApi from "../axios/DysonApi.ts";
-import 'semantic-ui-css/semantic.min.css'
+import {Avatar, Button, Divider, Input} from "antd";
+// import 'semantic-ui-css/semantic.min.css'
 
 const listComment = (
     {
@@ -27,7 +15,7 @@ const listComment = (
     }: any) => {
     const [commentContent, setCommentContent] = useState('')
     const handleComment = async () => {
-        if(!commentContent) {
+        if (!commentContent) {
             return toast.error('Vui lòng nhập nội dung bình luận')
         }
 
@@ -46,44 +34,59 @@ const listComment = (
         }
     }
     return (
-        <CommentGroup style={{width: '100%'}}>
-            <Header as='h3' dividing>
+        <div style={{width: '100%', marginTop: 30}}>
+            <h3>
                 {listComment.length} Comments
-            </Header>
+            </h3>
+            <Divider/>
 
             <div style={{maxHeight: 500, overflow: 'auto', gap: '10px'}} className={'d-flex flex-column'}>
                 {
                     listComment.map((e: any) => (
-                        <Comment>
-                            <CommentAvatar src='https://react.semantic-ui.com/images/avatar/small/matt.jpg'/>
-                            <CommentContent>
-                                <CommentAuthor as='a'>Anonymous</CommentAuthor>
-                                <CommentMetadata>
-                                    <div>
+                        <div className={'d-flex'}>
+                            <Avatar
+                                className={'mr-2'}
+                                src='https://react.semantic-ui.com/images/avatar/small/matt.jpg'/>
+                            <div>
+                                <div className={'d-flex align-items-center'}>
+                                    <div className={'mr-2'}>Anonymous</div>
+                                    <div style={{color: 'gray', fontSize: 12}}>
                                         {moment(e.createdAt).fromNow()}
                                     </div>
-                                </CommentMetadata>
-                                <CommentText>{e.content}</CommentText>
-                            </CommentContent>
-                        </Comment>
+                                </div>
+
+                                <div>{e.content}</div>
+                            </div>
+                        </div>
                     ))
                 }
             </div>
 
+            <Divider/>
             {
                 canComment && (
-                    <Form reply>
-                        <FormTextArea
+                    <div className={'mt-3 d-flex flex-column'}>
+                        <Input.TextArea
+                            style={{width: 400}}
                             value={commentContent}
                             onChange={(e) => {
                                 setCommentContent(e.target.value)
-
-                            }}/>
-                        <Button onClick={handleComment} content='Bình luận' labelPosition='left' icon='edit' primary/>
-                    </Form>
+                            }}
+                            placeholder={'Nhập nội dung bình luận'}
+                            autoSize={{minRows: 3, maxRows: 5}}
+                        />
+                        <Button
+                            style={{width: 100, marginTop: 10}}
+                            onClick={handleComment}
+                            type={'primary'}
+                            size={'large'}
+                        >
+                            Bình luận
+                        </Button>
+                    </div>
                 )
             }
-        </CommentGroup>
+        </div>
     )
 }
 
