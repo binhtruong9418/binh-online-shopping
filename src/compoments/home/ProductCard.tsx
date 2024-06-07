@@ -14,7 +14,7 @@ export default function ProductCard({item}: InferProps<typeof ProductCard.propTy
         >
             <Link to={`/product/${item?.id}`}>
                 <div>
-                    <img src={item?.image} alt="" className="w-100 h-100"/>
+                    <img src={item?.image} alt="" width={'100%'} height={'100%'} style={{objectFit: 'cover'}}/>
                     {
                         isHover && (
                             <div className="hover-content display-on-hover">

@@ -12,7 +12,7 @@ export default function () {
         page: 1,
         limit: TOTAL_PRODUCT_PER_PAGE,
         sort: '-createdAt',
-        category: '',
+        category: undefined,
         min: 0,
         max: 2000000,
         name: '',
@@ -46,12 +46,6 @@ export default function () {
         isSuccess: isSuccessCategory,
     } = useQuery(['getListCategory'], () => DysonApi.getAllCategory(), {
         refetchOnWindowFocus: true,
-        onSuccess: (data: any) => {
-            setDataSearch({
-                ...dataSearch,
-                category: data[0].name,
-            })
-        }
     })
 
     const {
@@ -68,7 +62,7 @@ export default function () {
     const handleChangeCategory = (category: string) => {
         setDataSearch({
             ...dataSearch,
-            category,
+            category: category ?? undefined,
             page: 1,
         })
     }
@@ -82,6 +76,12 @@ export default function () {
                     </h6>
                     <div className="catagories-menu">
                         <ul>
+                            <li
+                                style={{cursor: "pointer"}}
+                                className={dataSearch.category === undefined ? "active" : ""}
+                                onClick={() => handleChangeCategory("")}>
+                                <a>Tất cả</a>
+                            </li>
                             {
                                 isSuccessCategory && listCategory.map((item: any) => (
                                     <li
