@@ -1,7 +1,6 @@
 import Logo from '../../assets/img/logo.png';
 import {Link} from "react-router-dom";
 export default function () {
-    const currentYear = new Date().getFullYear()
     return (
         <footer className="footer_area clearfix">
             <div className="container">

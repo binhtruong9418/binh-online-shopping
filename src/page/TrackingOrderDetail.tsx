@@ -38,7 +38,7 @@ export default function TrackingOrderDetail() {
         })
 
     console.log(orderDetail)
-    const totalNotDiscount = orderDetail?.products?.reduce((acc: number, cur: any) => acc + cur.quantity * cur.price, 0)
+    const totalNotDiscount = orderDetail?.products?.reduce((acc: number, cur: any) => acc + +cur.quantity * +cur.price, 0)
     const totalDiscount = orderDetail?.products?.reduce((acc: number, cur: any) => acc + cur.quantity * cur.discount * cur.price, 0)
     if (isLoading) {
         return (
