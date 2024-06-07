@@ -44,7 +44,7 @@ export default function () {
                 <nav className="amado-nav">
                     <ul>
                         <li className={pathname === '/' ? 'active' : ''}>
-                            <Link to={'/'}>{t("Trang chủ")}
+                            <Link to={'/'}>{t("Danh sách sản phẩm")}
                             </Link>
                         </li>
                         <li className={pathname === '/shop' ? 'active' : ''}>
