@@ -1,9 +1,9 @@
 import {Button, Divider, Pagination, Popconfirm, Select, Space, Table, Tag} from "antd";
 import moment from "moment";
-import { useState } from "react";
-import { useQuery } from "react-query";
+import {useState} from "react";
+import {useQuery} from "react-query";
 import DysonApi from "../../axios/DysonApi.ts";
-import { toast } from "react-toastify";
+import {toast} from "react-toastify";
 import {ORDER_STATUS, ORDER_STATUS_LABEL} from "../../constants";
 import {CheckCircleOutlined, MinusCircleOutlined, SyncOutlined,} from "@ant-design/icons";
 import {RiRefund2Line} from "react-icons/ri";
@@ -107,6 +107,12 @@ export default function OrderTable(): JSX.Element {
 
     const columns = [
         {
+            title: 'Mã đơn hàng',
+            dataIndex: 'orderId',
+            key: 'orderId',
+
+        },
+        {
             title: 'Ngày đặt',
             dataIndex: 'orderDate',
             key: 'orderDate',
@@ -127,7 +133,7 @@ export default function OrderTable(): JSX.Element {
                     <p>{shippingDetail.name} {shippingDetail.phone}</p>
                     <p>{shippingDetail.email}</p>
                     <p>{shippingDetail.address}</p>
-                    <Divider />
+                    <Divider/>
                     <p>Tỉnh/Thành phố: {shippingDetail.province}</p>
                     <p>Quận/Huyện: {shippingDetail.district}</p>
                     <p>Xã/Xóm: {shippingDetail.ward}</p>
@@ -190,66 +196,67 @@ export default function OrderTable(): JSX.Element {
         {
             title: 'Hành động',
             key: 'action',
-            render: (_: any, record: any) => {return (
-                <Space
-                    direction={"vertical"}
-                >
-                    <Popconfirm
-                        title={"Bạn muốn xác nhận đơn hàng này?"}
-                        onConfirm={async () => await handleConfirmOrder(record)}
-                        disabled={record.status !== ORDER_STATUS.PAID}
+            render: (_: any, record: any) => {
+                return (
+                    <Space
+                        direction={"vertical"}
                     >
-
-                        <Button
-                            type={"primary"}
-                            icon={<CheckCircleOutlined/>}
-                            className={'w-32 items-center justify-center flex bg-green-500'}
+                        <Popconfirm
+                            title={"Bạn muốn xác nhận đơn hàng này?"}
+                            onConfirm={async () => await handleConfirmOrder(record)}
                             disabled={record.status !== ORDER_STATUS.PAID}
                         >
-                            {"Xác nhận"}
-                        </Button>
-                    </Popconfirm>
-                    <Popconfirm
-                        title={"Bạn muốn hoàn tiền đơn hàng này?"}
-                        onConfirm={async () => await handleRefundOrder(record)}
-                        disabled={record.status !== ORDER_STATUS.CANCELLED}
-                    >
-                        <Button
-                            type={"primary"}
-                            icon={<RiRefund2Line className={'text-lg'}/>}
-                            className={'w-32 items-center justify-center flex bg-amber-700'}
+
+                            <Button
+                                type={"primary"}
+                                icon={<CheckCircleOutlined/>}
+                                className={'w-32 items-center justify-center flex bg-green-500'}
+                                disabled={record.status !== ORDER_STATUS.PAID}
+                            >
+                                {"Xác nhận"}
+                            </Button>
+                        </Popconfirm>
+                        <Popconfirm
+                            title={"Bạn muốn hoàn tiền đơn hàng này?"}
+                            onConfirm={async () => await handleRefundOrder(record)}
                             disabled={record.status !== ORDER_STATUS.CANCELLED}
-                        >{"Hoàn tiền"}</Button>
-                    </Popconfirm>
-                    <Popconfirm
-                        title={"Bạn muốn cập nhật trạng thái đang giao hàng?"}
-                        onConfirm={async () => await handleUpdateDeliveringOrder(record)}
-                        disabled={record.status !== ORDER_STATUS.CONFIRMED}
-                    >
-
-                        <Button
-                            type={"primary"}
-                            icon={<MdOutlineLocalShipping className={'text-lg'}/>}
-                            className={'w-32 items-center justify-center flex'}
+                        >
+                            <Button
+                                type={"primary"}
+                                icon={<RiRefund2Line className={'text-lg'}/>}
+                                className={'w-32 items-center justify-center flex bg-amber-700'}
+                                disabled={record.status !== ORDER_STATUS.CANCELLED}
+                            >{"Hoàn tiền"}</Button>
+                        </Popconfirm>
+                        <Popconfirm
+                            title={"Bạn muốn cập nhật trạng thái đang giao hàng?"}
+                            onConfirm={async () => await handleUpdateDeliveringOrder(record)}
                             disabled={record.status !== ORDER_STATUS.CONFIRMED}
-                        >{"Đang giao"}</Button>
-                    </Popconfirm>
+                        >
 
-                    <Popconfirm
-                        title={"Bạn có muốn cập nhật trạng thái đơn hàng?"}
-                        onConfirm={async () => await handleUpdateDeliveredOrder(record)}
-                        disabled={record.status !== ORDER_STATUS.DELIVERING}
-                    >
+                            <Button
+                                type={"primary"}
+                                icon={<MdOutlineLocalShipping className={'text-lg'}/>}
+                                className={'w-32 items-center justify-center flex'}
+                                disabled={record.status !== ORDER_STATUS.CONFIRMED}
+                            >{"Đang giao"}</Button>
+                        </Popconfirm>
 
-                        <Button
-                            type={"primary"}
-                            icon={<MdOutlineLocalShipping className={'text-lg'}/>}
-                            className={'w-32 items-center justify-center flex'}
+                        <Popconfirm
+                            title={"Bạn có muốn cập nhật trạng thái đơn hàng?"}
+                            onConfirm={async () => await handleUpdateDeliveredOrder(record)}
                             disabled={record.status !== ORDER_STATUS.DELIVERING}
-                        >{"Đã giao"}</Button>
-                    </Popconfirm>
-                </Space>
-            );
+                        >
+
+                            <Button
+                                type={"primary"}
+                                icon={<MdOutlineLocalShipping className={'text-lg'}/>}
+                                className={'w-32 items-center justify-center flex'}
+                                disabled={record.status !== ORDER_STATUS.DELIVERING}
+                            >{"Đã giao"}</Button>
+                        </Popconfirm>
+                    </Space>
+                );
             },
             width: 100,
         }
@@ -324,7 +331,7 @@ export default function OrderTable(): JSX.Element {
                     >
                         <Select.Option value={undefined}>Tất cả</Select.Option>
                         {
-                            ORDER_STATUS_LABEL .map((status: any) => (
+                            ORDER_STATUS_LABEL.map((status: any) => (
                                 <Select.Option key={status.value} value={status.value}>{status.label}</Select.Option>
                             ))
                         }

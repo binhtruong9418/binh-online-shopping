@@ -49,7 +49,7 @@ export default function () {
                         </li>
                         <li className={pathname === '/shop' ? 'active' : ''}>
                             <Link to={'/shop'}>
-                                {t("Sản phẩm")}
+                                {t("Tìm kiếm sản phẩm")}
                             </Link>
                         </li>
 
