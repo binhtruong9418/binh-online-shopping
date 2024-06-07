@@ -110,7 +110,7 @@ export default function () {
                                     setPriceRange(value)
                                 }}
                                 min={0}
-                                max={2000000}
+                                max={500000}
                                 styles={{
                                     track: {
                                         backgroundColor: '#fbb710',
