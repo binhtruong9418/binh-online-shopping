@@ -14,7 +14,7 @@ export default function () {
         sort: '-createdAt',
         category: undefined,
         min: 0,
-        max: 2000000,
+        max: 500000,
         name: '',
     });
     const {t} = useTranslation()
