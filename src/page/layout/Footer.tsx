@@ -14,14 +14,6 @@ export default function () {
                                     width: "100px"
                                 }} src={Logo} alt="" /></Link>
                             </div>
-                            <p className="copywrite">
-                                Copyright &copy;
-                                {currentYear}
-                                All rights reserved | This template is made with
-                                <i className="fa fa-heart-o" aria-hidden="true"></i> by <a
-                                href="https://colorlib.com" target="_blank">Colorlib</a> & Re-distributed by <a
-                                href="https://themewagon.com/" target="_blank">Themewagon</a>
-                            </p>
                         </div>
                     </div>
                     <div className="col-12 col-lg-8">
