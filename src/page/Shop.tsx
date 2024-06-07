@@ -19,7 +19,7 @@ export default function () {
     });
     const {t} = useTranslation()
 
-    const [priceRange, setPriceRange] = useState<any>([0, 2000000])
+    const [priceRange, setPriceRange] = useState<any>([0, 500000])
     const [isOpenFilterSort, setIsOpenFilterSort] = useState<boolean>(false);
 
     const SORT_BY =
