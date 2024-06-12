@@ -4,13 +4,15 @@ import { useCookies } from "react-cookie";
 import DysonApi from "../axios/DysonApi.ts";
 import { Skeleton } from "antd";
 import { toast } from "react-toastify";
-import { useState } from "react";
+import {useMemo, useState} from "react";
 import DefaultLayout from "./layout/DefaultLayout.tsx";
 import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
 
 export default function () {
     const [cookies] = useCookies(['cart']);
+    const userInfo = localStorage.getItem('userInfo');
+    const jwtToken = localStorage.getItem('jwtToken');
     const [listProduct, setListProduct] = useState<any[]>([])
     const queryClient = useQueryClient();
     const {t} = useTranslation()
@@ -36,6 +38,17 @@ export default function () {
     }, {
         enabled: !!cookies.cart
     })
+
+    const canOrder = useMemo(() => {
+        return !!(userInfo && jwtToken);
+
+    }, [userInfo, jwtToken])
+
+    const handleToast = () => {
+        if(!canOrder) {
+            toast.error(t("Vui lòng đăng nhập để tạo đơn hàng"))
+        }
+    }
 
     const handleChangeQuantity = async (productId: string, quantity: number, type: string) => {
         try {
@@ -101,7 +114,11 @@ export default function () {
                                     <li><span>{t("Tổng cộng")}:</span> <span>{totalAmount?.toLocaleString('vi-VN')}₫</span></li>
                                 </ul>
                                 <div className="cart-btn mt-100">
-                                    <Link to="/checkout" className="btn amado-btn w-100">
+                                    <Link to={
+                                        canOrder ? '/checkout' : '#'
+                                    } onClick={
+                                        handleToast
+                                    } className="btn amado-btn w-100">
                                         {t("Tạo đơn hàng")}
                                     </Link>
                                 </div>

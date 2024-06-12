@@ -1,7 +1,7 @@
 import Logo from '../../assets/img/logo.png';
 import Card from '../../assets/img/cart.png';
 import MobileNav from "./MobileNav.tsx";
-import {useState} from "react";
+import {useMemo, useState} from "react";
 import {Link, useLocation} from "react-router-dom";
 import {useQuery} from 'react-query';
 import DysonApi from '../../axios/DysonApi.ts';
@@ -23,12 +23,34 @@ export default function () {
 
     const {
         data: totalQuantity = 0
-    } = useQuery(['myCartQuantity'], async () => {
-        const res = await DysonApi.getCart(cookies.cart);
+    } = useQuery(['myCartQuantity', cookies], async ({queryKey}: any) => {
+        const [, cartData] = queryKey;
+        const res = await DysonApi.getCart(cartData.cart);
         return res.products.reduce((acc: number, cur: any) => acc + cur.quantity, 0)
     }, {
         enabled: !!cookies.cart
     })
+
+    const {path, label} = useMemo(() => {
+        if (userInfo && jwtToken) {
+            const userData = JSON.parse(userInfo);
+            console.log(userData)
+            if (!userData.role.includes('admin')) {
+                return {path: '/user/login', label: 'Đăng xuất'}
+            } else {
+                return {path: '/admin', label: 'Admin'}
+            }
+        } else {
+            return {path: '/user/login', label: 'Đăng nhập'}
+        }
+    }, [userInfo, jwtToken])
+
+    const handleClick = () => {
+        if (label === 'Đăng xuất') {
+            localStorage.removeItem('userInfo');
+            localStorage.removeItem('jwtToken');
+        }
+    }
 
 
     return (
@@ -58,11 +80,7 @@ export default function () {
                                 {t("Kiểm tra đơn hàng")}
                             </Link>
                         </li>
-                        {
-                            userInfo && jwtToken && (
-                                <li><Link to={'/admin'}>Admin</Link></li>
-                            )
-                        }
+                        <li><Link to={path} onClick={handleClick}>{label}</Link></li>
                     </ul>
                 </nav>
                 <div className="cart-fav-search mb-100">

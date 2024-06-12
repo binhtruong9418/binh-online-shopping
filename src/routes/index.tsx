@@ -12,6 +12,8 @@ import Login from "../page/admin/Login.tsx";
 import AdminHome from "../page/admin/AdminHome.tsx";
     import TrackingOrder from "../page/TrackingOrder.tsx";
     import TrackingOrderDetail from "../page/TrackingOrderDetail.tsx";
+    import UserLogin from "../page/UserLogin.tsx";
+    import Register from "../page/Register.tsx";
 
 function MainRouter() {
     return (
@@ -29,6 +31,8 @@ function MainRouter() {
             <Route path='/checkout/success/:id' element={<CheckoutSuccess />} />
             <Route path='/admin/login' element={<Login />} />
             <Route path='/admin/*' element={<AdminHome />} />
+            <Route path='/user/login' element={<UserLogin />} />
+            <Route path='/user/register' element={<Register />} />
         </Routes>
     )
 }

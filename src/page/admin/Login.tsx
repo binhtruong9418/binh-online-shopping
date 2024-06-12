@@ -9,7 +9,7 @@ const Login = () => {
     const navigate = useNavigate()
     const { onSetJwtToken } = useConnection()
     const handleLogin = async () => {
-        if(!email || !code) return toast.error("Please enter email and code")
+        if(!email || !code) return toast.error("Please enter email and password")
         try {
             const data = await DysonApi.login(email, code)
             if (data.message === "Login successfully" && (data.user.role.includes("admin") || data.role.includes("super-admin"))) {

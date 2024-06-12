@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import {useEffect, useState} from 'react'
 import AddressJson from '../config/AddressJson.json'
 import { toast } from 'react-toastify'
 import { useQuery } from 'react-query'
@@ -10,7 +10,7 @@ import {useTranslation} from "react-i18next";
 const Checkout = () => {
     const navigate = useNavigate()
     const [cookies] = useCookies(['cart']);
-
+    const userInfo = localStorage.getItem('userInfo');
     const [isOpenProvinceDropdown, setIsOpenProvinceDropdown] = useState<boolean>(false)
     const [isOpenDistrictDropdown, setIsOpenDistrictDropdown] = useState<boolean>(false)
     const [isOpenWardDropdown, setIsOpenWardDropdown] = useState<boolean>(false)
@@ -49,6 +49,19 @@ const Checkout = () => {
     }, {
         enabled: !!cookies.cart
     })
+
+    useEffect(() => {
+        if (userInfo) {
+            const userData = JSON.parse(userInfo);
+            setName(userData.addressDetail.name)
+            setEmail(userData.email)
+            setPhone(userData.addressDetail.phone)
+            setAddress(userData.addressDetail.address)
+            setProvince(userData.addressDetail.province)
+            setDistrict(userData.addressDetail.district)
+            setWard(userData.addressDetail.ward)
+        }
+    }, [userInfo])
 
     const handleSelectProvince = (province: any) => {
         setProvince(province.name)
@@ -122,7 +135,7 @@ const Checkout = () => {
                                                 value={name}
                                                 placeholder={t("Tên đầy đủ *")}
                                                 onChange={(e) => setName(e.target.value)}
-                                                required />
+                                                required/>
                                         </div>
                                         <div className="col-12 mb-3">
                                             <input
@@ -150,13 +163,16 @@ const Checkout = () => {
                                             <div className={isOpenProvinceDropdown ?
                                                 "nice-select w-100 open" :
                                                 "nice-select w-100"}
-                                                onClick={() => setIsOpenProvinceDropdown(!isOpenProvinceDropdown)}
+                                                 onClick={() => setIsOpenProvinceDropdown(!isOpenProvinceDropdown)}
                                             >
-                                                <span className="current pl-2">{province ? province : t("Tỉnh, thành phố *")}</span>
+                                                <span
+                                                    className="current pl-2">{province ? province : t("Tỉnh, thành phố *")}</span>
                                                 <ul className="list">
                                                     {
                                                         listProvince.map((item: any) => (
-                                                            <li className="option" onClick={() => handleSelectProvince(item)} key={item.codename}>{item.name}</li>
+                                                            <li className="option"
+                                                                onClick={() => handleSelectProvince(item)}
+                                                                key={item.codename}>{item.name}</li>
                                                         ))
                                                     }
                                                 </ul>
@@ -166,13 +182,15 @@ const Checkout = () => {
                                             <div className={isOpenDistrictDropdown ?
                                                 "nice-select w-100 open" :
                                                 "nice-select w-100"}
-                                                onClick={() => setIsOpenDistrictDropdown(!isOpenDistrictDropdown && listDistrict.length > 0)}
+                                                 onClick={() => setIsOpenDistrictDropdown(!isOpenDistrictDropdown && listDistrict.length > 0)}
                                             >
-                                                <span className="current pl-2">{district ? district : t("Quận, huyện *")}</span>
+                                                <span
+                                                    className="current pl-2">{district ? district : t("Quận, huyện *")}</span>
                                                 <ul className="list">
                                                     {
                                                         listDistrict.map((item: any) => (
-                                                            <li key={item.codename} className="option" onClick={() => handleSelectDistrict(item)}>{item.name}</li>
+                                                            <li key={item.codename} className="option"
+                                                                onClick={() => handleSelectDistrict(item)}>{item.name}</li>
                                                         ))
                                                     }
                                                 </ul>
@@ -182,13 +200,14 @@ const Checkout = () => {
                                             <div className={isOpenWardDropdown ?
                                                 "nice-select w-100 open" :
                                                 "nice-select w-100"}
-                                                onClick={() => setIsOpenWardDropdown(!isOpenWardDropdown && listWard.length > 0 && listDistrict.length > 0)}
+                                                 onClick={() => setIsOpenWardDropdown(!isOpenWardDropdown && listWard.length > 0 && listDistrict.length > 0)}
                                             >
                                                 <span className="current pl-2">{ward ? ward : t("Xã, phường *")}</span>
                                                 <ul className="list">
                                                     {
                                                         listWard.map((item: any) => (
-                                                            <li key={item.codename} className="option" onClick={() => handleSelectWard(item)}>{item.name}</li>
+                                                            <li key={item.codename} className="option"
+                                                                onClick={() => handleSelectWard(item)}>{item.name}</li>
                                                         ))
                                                     }
                                                 </ul>

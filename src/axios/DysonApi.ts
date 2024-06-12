@@ -131,6 +131,12 @@ const DysonApi = {
         return response.data
     },
 
+    register: async (data: any): Promise<any> => {
+        const url = 'user/register'
+        const response = await AxiosClient.post(url, data);
+        return response.data
+    },
+
     //file
     uploadFile: async (file: any): Promise<any> => {
         const url = 'file/get-signed-url'
