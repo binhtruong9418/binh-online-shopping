@@ -43,7 +43,7 @@ const expandableProduct = (products: any) => {
             productId: product._id,
             productName: product.name,
             productQuantity: product.quantity,
-            productPrice: product.currentPrice,
+            productPrice: product.orderPrice,
         }
     })
 
@@ -79,7 +79,8 @@ export default function OrderTable(): JSX.Element {
                 const product = await DysonApi.getProductById(e.productId);
                 return {
                     ...product,
-                    quantity: e.quantity
+                    quantity: e.quantity,
+                    orderPrice: e.price,
                 }
             }))
 

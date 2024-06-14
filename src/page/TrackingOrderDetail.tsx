@@ -9,13 +9,14 @@ import {MdOutlineLocalShipping} from "react-icons/md";
 import {FiBox} from "react-icons/fi";
 import {upperCaseFirstLetter} from "../utils";
 import {useTranslation} from "react-i18next";
+import {useMemo} from "react";
 
 export default function TrackingOrderDetail() {
     const {id: orderId} = useParams();
     const navigate = useNavigate();
     const {t} = useTranslation();
     const {
-        data: orderDetail = {},
+        data: orderDetail,
         isLoading,
     } = useQuery(
         ['getOrderDetail', orderId],
@@ -26,7 +27,8 @@ export default function TrackingOrderDetail() {
                 console.log(product, "product")
                 return {
                     ...product,
-                    quantity: e.quantity
+                    quantity: e.quantity,
+                    orderPrice: e.price,
                 }
             }))
             return {
@@ -38,8 +40,21 @@ export default function TrackingOrderDetail() {
         })
 
     console.log(orderDetail)
-    const totalNotDiscount = orderDetail?.products?.reduce((acc: number, cur: any) => acc + +cur.quantity * +cur.price, 0)
-    const totalDiscount = orderDetail?.products?.reduce((acc: number, cur: any) => acc + cur.quantity * cur.discount * cur.price, 0)
+    const {totalDiscount, totalNotDiscount, totalPayment, shippingFee} = useMemo(() => {
+        if (!orderDetail) return {
+            totalDiscount: 0,
+            totalNotDiscount: 0,
+            totalPayment: 0,
+            shippingFee: 0
+        }
+
+        return {
+            totalNotDiscount: orderDetail?.products?.reduce((acc: number, cur: any) => acc + +cur.quantity * +cur.orderPrice, 0) + orderDetail?.totalDiscount,
+            totalDiscount: orderDetail?.totalDiscount,
+            totalPayment: orderDetail?.totalPayment,
+            shippingFee: orderDetail?.shippingFee   // 0
+        }
+    }, [orderDetail])
     if (isLoading) {
         return (
             <Skeleton active/>
@@ -185,18 +200,18 @@ export default function TrackingOrderDetail() {
                                                 }
                                                 <div>
                                                     {
-                                                        e?.name && e?.currentPrice ? (
+                                                        e?.name && e?.orderPrice ? (
                                                             <>
                                                                 <div
                                                                     className={'ml-3'}>{upperCaseFirstLetter(e?.name)}</div>
 
                                                                 <div
-                                                                    className={'ml-3'}>{t("Giá")}: {e?.currentPrice.toLocaleString('vi-VN')}₫
+                                                                    className={'ml-3'}>{t("Giá")}: {e?.orderPrice.toLocaleString('vi-VN')}₫
                                                                 </div>
                                                                 <div
                                                                     className={'ml-3'}>{t("Số lượng")}: {e?.quantity}</div>
                                                                 <div
-                                                                    className={'ml-3 mt-5'}>{(e.quantity * e?.currentPrice).toLocaleString('vi-VN')}₫
+                                                                    className={'ml-3 mt-5'}>{(e.quantity * e?.orderPrice).toLocaleString('vi-VN')}₫
                                                                 </div>
                                                             </>
                                                         ) : (
@@ -231,13 +246,13 @@ export default function TrackingOrderDetail() {
                                 </div>
                                 <div className={'d-flex justify-content-between align-items-center mb-1'}>
                                     <div>{t("Chi phí vận chuyển")}:</div>
-                                    <div>{0?.toLocaleString('vi-VN')}₫</div>
+                                    <div>{shippingFee?.toLocaleString('vi-VN')}₫</div>
                                 </div>
                             </div>
                             <Divider/>
                             <div className={'d-flex justify-content-between align-items-center'}>
                                 <div>{t("Tổng cộng")}:</div>
-                                <div>{(totalNotDiscount - totalDiscount)?.toLocaleString('vi-VN')}₫</div>
+                                <div>{totalPayment?.toLocaleString('vi-VN')}₫</div>
                             </div>
 
                             <button
